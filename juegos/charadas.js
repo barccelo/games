@@ -146,13 +146,15 @@
           exclude:words.slice(-15)}),signal:ctrl.signal});
       const data=await response.json();
       if(!response.ok||!Array.isArray(data.items))throw Error("No se pudo generar");
-      const generated=data.items.map(item=>String(item.word||"").trim()).filter(Boolean);
-      const seen=new Set(generated.map(word=>word.toLocaleLowerCase("es")));
-      for(const word of fallback){
+      const generated=[];
+      const seen=new Set();
+      for(const item of [...data.items,...fallback]){
+        const word=String(typeof item==="string"?item:item?.word||"").trim();
+        const key=word.toLocaleLowerCase("es");
+        if(word&&!seen.has(key)){seen.add(key);generated.push(word);}
         if(generated.length>=requestCount)break;
-        if(!seen.has(word.toLocaleLowerCase("es"))){seen.add(word.toLocaleLowerCase("es"));generated.push(word);}
       }
-      load(generated.slice(0,requestCount));
+      load(generated);
     }catch{
       load(fallback.slice(0,requestCount));
       notice("Se usaron palabras incluidas. Puedes seguir jugando.");
