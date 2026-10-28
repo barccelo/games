@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
-<title>Palabra prohibida · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=1"></script><script defer src="./rapidos.js?v=1"></script></head>
+<title>Palabra prohibida · Games</title><link rel="stylesheet" href="./ui.css?v=9"><script defer src="./palabras.js?v=2"></script><script defer src="./rapidos.js?v=2"></script></head>
 <body data-quick="prohibida" class="challenge-page"><main class="wrap">
 <header class="top"><a class="back" href="../">← Games</a><span class="brand">Palabra prohibida</span></header>
-<h1>Palabra prohibida</h1><section class="panel challenge-stage">
-<div class="challenge-metrics"><span class="tag">La palabra que no debe decirse</span><span id="quickCounter" class="secondary">Palabra 1</span></div>
-<div id="quickWord" class="challenge-word" aria-live="polite">?</div>
+<h1>Palabra prohibida</h1><section class="panel challenge-stage quick-presentation" id="quickStage">
+<button id="quickExit" type="button" class="quick-exit" aria-label="Salir de pantalla completa">×</button><div class="challenge-metrics"><span class="tag">La palabra que no debe decirse</span></div>
+<div id="quickWord" class="challenge-word" aria-live="polite" title="Toca para iniciar o pausar en pantalla completa">?</div>
 <p class="secondary center">Muéstrala al grupo, no al jugador vendado.</p>
-<div class="challenge-time" id="quickClock">01:00</div><div class="stack"><button id="quickStart">Iniciar tiempo</button><button id="quickPause" class="alt">Pausar</button></div><div class="stack" style="margin-top:10px"><button id="quickHit">¡La dijo!</button><button id="quickNext" class="alt">Siguiente palabra</button></div><p id="quickStatus" class="secondary" role="status"></p></section>
-<section class="panel"><div class="row between"><span>Aciertos</span><strong id="quickHits">0</strong></div><label for="quickDuration">Duración por palabra</label><select id="quickDuration"><option value="60">1 minuto</option><option value="90">1 minuto y medio</option><option value="120">2 minutos</option></select><button id="quickGenerate" class="alt" style="margin-top:12px">Nuevas palabras</button></section>
-</main></body></html>
+<div class="challenge-time" id="quickClock" title="Toca para iniciar o pausar">01:00</div><div class="stack"><button id="quickStart">Iniciar tiempo</button><button id="quickPause" class="alt">Pausar</button></div><div class="stack" style="margin-top:10px"><button id="quickHit">¡La dijo!</button><button id="quickNext" class="alt">Siguiente palabra</button></div><p id="quickStatus" class="secondary" role="status"></p></section>
+<section class="panel"><div class="row between"><span>Aciertos</span><strong id="quickHits">0</strong></div><label for="quickDuration">Duración por palabra</label><select id="quickDuration"><option value="60">1 minuto</option><option value="90">1 minuto y medio</option><option value="120">2 minutos</option></select><div class="stack" style="margin-top:12px"><button id="quickGenerate" class="alt">Nuevas palabras</button><button id="quickFull">Pantalla completa</button></div></section>
+<details class="panel quick-editor"><summary>Elegir mis palabras</summary><p class="secondary">Escribe palabras, una por línea. Puedes jugar únicamente con las que elijas.</p><label for="quickManual">Mis palabras</label><textarea id="quickManual" rows="5" placeholder="Agua&#10;Elefante&#10;Reloj"></textarea><button id="quickApply">Usar mis palabras</button><p class="secondary" id="quickManualStatus" role="status"></p></details></main></body></html>

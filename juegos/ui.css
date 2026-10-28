@@ -137,3 +137,27 @@
 .pa-setup-actions>button{flex:1 1 180px}
 .pa-stage .challenge-word{min-height:140px}
 @media(max-width:620px){.paper-rules{grid-template-columns:1fr;gap:7px}.paper-rules>div{padding:10px 13px;gap:4px}.paper-rules span{font-size:12px}}
+
+.quick-editor textarea{margin:8px 0 12px;background:#0e1520;border:1px solid #435065;border-radius:12px;color:#eef2f7;padding:13px;width:100%;font:inherit;resize:vertical}
+.quick-editor textarea:focus{outline:2px solid #a7ff89}
+.quick-editor summary{font-weight:700;cursor:pointer}
+.quick-editor button{min-width:175px}
+.quick-exit{display:none}
+.quick-presentation:fullscreen,.presenting .quick-presentation{
+  position:fixed;inset:0;width:100%;height:100dvh;max-width:none;margin:0;padding:clamp(14px,4vw,35px);
+  border:0;border-radius:0;background:#090b0e;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;z-index:9999
+}
+.quick-presentation:fullscreen>:not(#quickWord):not(#quickClock):not(#quickExit),
+.presenting .quick-presentation>:not(#quickWord):not(#quickClock):not(#quickExit){display:none!important}
+.quick-presentation:fullscreen #quickWord,.presenting #quickWord{
+  font-size:clamp(46px,11vw,145px);line-height:1.06;max-width:100%;min-height:0;color:#fff;overflow-wrap:anywhere
+}
+.quick-presentation:fullscreen #quickClock,.presenting #quickClock{
+  font-size:clamp(65px,15vw,180px);line-height:1.2;margin:24px 0;color:#a7ff89
+}
+.quick-presentation:fullscreen #quickExit,.presenting #quickExit{
+  display:block!important;position:fixed;top:14px;right:14px;background:transparent;color:#92a0ad;font-size:29px;
+  width:48px;height:48px;min-height:48px;padding:0;opacity:.58
+}
+@media(max-width:600px){.quick-editor textarea{min-height:135px}}

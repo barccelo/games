@@ -22,7 +22,6 @@
       }
     }else{
       $("quickWord").textContent=pool[index]?.word||"Prepara la partida";
-      if($("quickCounter"))$("quickCounter").textContent="Palabra "+(index+1)+" de "+pool.length;
     }
     if($("quickClock"))$("quickClock").textContent=format(time);
     if($("quickHits"))$("quickHits").textContent=hits;
@@ -41,11 +40,40 @@
   }
   function next(){
     pause();
+    const manual=$("quickManual");
+  const manualStatus=$("quickManualStatus");
+  const key="games-custom-"+mode;
+  try{manual.value=localStorage.getItem(key)||""}catch{}
+  $("quickApply").addEventListener("click",()=>{
+    const values=[...new Set(manual.value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean))];
+    if(!values.length){manualStatus.textContent="Escribe al menos una "+(mode==="stop"||mode==="dobles"?"categoría.":"palabra.");return;}
+    try{localStorage.setItem(key,values.join("\n"))}catch{}
+    pause();pool=values.map(word=>({word,category:"",clue:""}));index=0;time=length();
     if(mode==="stop")letter();
+    render();manualStatus.textContent="Se utilizarán tus "+values.length+" "+(mode==="stop"||mode==="dobles"?"categorías.":"palabras.");
+  });
+  if(mode==="prohibida"){
+    const stage=$("quickStage");
+    const close=()=>{
+      document.body.classList.remove("presenting");
+      if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+    };
+    $("quickFull").addEventListener("click",()=>{
+      document.body.classList.add("presenting");
+      stage.requestFullscreen?.().catch(()=>{});
+    });
+    $("quickExit").addEventListener("click",event=>{event.stopPropagation();close();});
+    stage.addEventListener("click",event=>{
+      if(!document.body.classList.contains("presenting")||event.target.closest("#quickExit"))return;
+      if(timer)pause();else if(time){deadline=Date.now()+time*1000;timer=setInterval(tick,180);render();}
+    });
+    document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement)document.body.classList.remove("presenting");});
+  }
+  if(mode==="stop")letter();
     else{
       index++;
       if(index>=pool.length){
-        pool=GameWords.local(mode,12);
+        pool=GameWords.mix(pool);
         index=0;
       }
     }
@@ -76,7 +104,7 @@
   $("quickGenerate").addEventListener("click",async()=>{
     const button=$("quickGenerate");
     button.disabled=true;notice("Preparando la siguiente ronda…");
-    const answer=await GameWords.prepare(mode,mode==="stop"?5:12);
+    const answer=mode==="cancion"?{items:GameWords.local("cancion",100),offline:true}:await GameWords.prepare(mode,mode==="stop"?5:12);
     pause();
     pool=answer.items;
     index=0;time=length();
