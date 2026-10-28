@@ -27,7 +27,7 @@ export default {async fetch(request,env){
  if(Number(request.headers.get("Content-Length")||0)>5000)return reply({error:"Solicitud demasiado grande"},413,origin);
  let input;try{input=await request.json()}catch{return reply({error:"JSON inválido"},400,origin)}
  const mode=String(input?.mode||"");if(!Object.hasOwn(MODE,mode))return reply({error:"Juego no válido"},400,origin);
- const count=mode==="alphabetics"?10:mode==="rosco"?26:Math.max(1,Math.min(15,Number.parseInt(input.count,10)||1));
+ const count=mode==="alphabetics"?10:mode==="rosco"?27:Math.max(1,Math.min(15,Number.parseInt(input.count,10)||1));
  const category=String(input.category||"").slice(0,60);
  const level=["fácil","medio","difícil"].includes(input.level)?input.level:"medio";
  const excluded=Array.isArray(input.exclude)?input.exclude.filter(s=>typeof s==="string").slice(-30).map(s=>s.slice(0,70)):[];
