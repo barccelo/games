@@ -1,23 +1,38 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
-<title>Papelito · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=1"></script><script defer src="./papelito.js?v=1"></script></head>
-<body class="challenge-page"><main class="wrap">
+<title>Papelito · Games</title><link rel="stylesheet" href="./ui.css?v=8">
+<script defer src="./papelito.js?v=2"></script></head>
+<body class="challenge-page papelito-page"><main class="wrap">
 <header class="top"><a class="back" href="../">← Games</a><span class="brand">Papelito</span></header>
 <h1>Papelito</h1>
-<div class="challenge-metrics"><span id="paRound" class="tag">Ronda 1 · Descripción</span><span id="paRemaining" class="secondary">10 papelitos</span></div>
-<section class="panel challenge-stage">
-<div id="paTeam" class="secondary">Equipo A</div>
-<div id="paWord" class="challenge-word">Astronauta</div>
+<section class="paper-rules" aria-label="Reglas de las tres rondas">
+<div><b>1 · Descripción</b><span>Habla libremente sin decir la palabra ni sus partes.</span></div>
+<div><b>2 · Una palabra</b><span>Da una sola palabra como pista. Puedes pasar.</span></div>
+<div><b>3 · Mímica</b><span>Solo gestos y movimientos, sin hablar ni emitir sonidos.</span></div>
+</section>
+<section class="panel pa-setup" id="paSetup">
+<h2>Preparar los papelitos</h2><p>Cada participante escribe entre 3 y 5 papelitos. Se mezclan y se usan exactamente los mismos durante las tres rondas. Se juega en equipos, con un minuto por turno.</p>
+<label for="paManual">Tus papelitos (uno por línea)</label>
+<textarea id="paManual" rows="7" placeholder="Astronauta&#10;La luna&#10;Un pirata&#10;Gato&#10;Superhéroe"></textarea>
+<p class="secondary" id="paManualCount">Escribe todas las palabras o frases que quieras utilizar.</p>
+<div class="pa-setup-actions"><button id="paOwn">Jugar con mis papelitos</button><button id="paLocal" class="alt">Usar papelitos incluidos</button><button id="paGenerate" class="alt">Generar con IA</button></div>
+<div class="row" style="margin-top:14px"><div class="col"><label for="paCount">Cantidad al generar</label><input id="paCount" type="number" min="4" max="40" value="20"></div><div class="col"><label for="paDuration">Segundos por turno</label><input id="paDuration" type="number" min="15" max="300" value="60"></div></div>
+<p id="paSetupStatus" class="secondary" role="status"></p>
+</section>
+<section id="paGame" hidden>
+<div class="challenge-metrics"><span id="paRound" class="tag">Ronda 1 · Descripción</span><span id="paRemaining" class="secondary">20 papelitos</span></div>
+<section class="panel challenge-stage pa-stage">
+<div class="row between"><span id="paTeam" class="tag">Equipo A</span><span id="paPhase" class="secondary">Ronda 1 de 3</span></div>
+<div id="paWord" class="challenge-word">Papelito</div>
 <div id="paTime" class="challenge-time" role="timer">01:00</div>
-<div class="stack"><button id="paHit">✓ Acertó · +1</button><button id="paPass" class="alt">Pasar papelito</button></div>
+<div class="stack"><button id="paHit">✓ Acertó · +1</button><button id="paPass" class="alt">Pasar al recipiente</button></div>
 <div class="row challenge-controls"><button id="paStart">Iniciar turno</button><button id="paPause" class="alt" disabled>Pausar</button><button id="paNext" class="alt">Cambiar equipo</button></div>
 <p id="paStatus" class="secondary" role="status">Describe libremente sin decir la palabra.</p>
 </section>
-<section class="panel"><div class="row between"><h2>Puntos acumulados</h2><span id="paPhase" class="secondary">Ronda 1 de 3</span></div>
+<section class="panel"><div class="row between"><h2>Puntos acumulados</h2><button id="paEdit" class="alt smallbtn">Editar papelitos</button></div>
 <div class="scores"><div class="score active" id="paBox0"><span>Equipo A</span><strong id="paScore0">0</strong></div>
-<div class="score" id="paBox1"><span>Equipo B</span><strong id="paScore1">0</strong></div></div></section>
-<details class="panel" id="paOptions"><summary>Preparar la partida</summary>
-<div class="row" style="margin-top:15px"><div class="col"><label for="paCount">Número de papelitos</label><input id="paCount" type="number" min="4" max="15" value="10"></div></div>
-<div class="stack" style="margin-top:15px"><button id="paGenerate">Preparar nuevos papelitos</button><button id="paLocal" class="alt">Usar incluidos</button></div>
-</details>
+<div class="score" id="paBox1"><span>Equipo B</span><strong id="paScore1">0</strong></div></div>
+<p id="paEnd" class="secondary" hidden></p>
+</section>
+</section>
 </main></body></html>

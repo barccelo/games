@@ -125,3 +125,15 @@
 .ab-edit-item input{min-width:0}
 .ab-save{width:100%}
 @media(max-width:600px){.ab-editor{grid-template-columns:1fr}.ab-track{min-width:555px}.ab-actions button{font-size:14px}.ab-focus .challenge-word{font-size:clamp(35px,9vw,54px)}}
+
+.paper-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
+.paper-rules>div{border:1px solid #344253;background:#17212d;border-radius:15px;padding:15px;display:flex;flex-direction:column;gap:7px}
+.paper-rules b{font-size:15px;color:#b3ff9a}
+.paper-rules span{font-size:13px;color:#a8b6c6;line-height:1.5}
+.pa-setup{margin-top:16px}
+.pa-setup textarea{display:block;width:100%;margin-top:8px;background:#0e1520;border:1px solid #435065;color:#eef2f7;border-radius:12px;padding:14px;font:inherit;resize:vertical;min-height:155px}
+.pa-setup textarea:focus{outline:2px solid #a7ff89}
+.pa-setup-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.pa-setup-actions>button{flex:1 1 180px}
+.pa-stage .challenge-word{min-height:140px}
+@media(max-width:620px){.paper-rules{grid-template-columns:1fr;gap:7px}.paper-rules>div{padding:10px 13px;gap:4px}.paper-rules span{font-size:12px}}
