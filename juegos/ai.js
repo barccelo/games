@@ -76,7 +76,7 @@ function setup(){
  if(mode==="charadas")$("aiCategory").placeholder="Películas o series / Personas / Lugares";
  if(mode==="letras"||mode==="numeros")$("aiLocal").textContent="Generar al azar";
  if(mode==="rosco"||mode==="alphabetics"){$("aiCount").value=defaultCount;$("aiCount").disabled=true;}
- $("aiEndpoint").value=read("games-ai-worker");
+ $("aiEndpoint").value=read("games-ai-worker")||"https://games-gemini.mbckp-at.workers.dev";
  $("aiToken").value=tokenRead();
  $("aiSave").onclick=()=>{
   const endpoint=$("aiEndpoint").value.trim().replace(/\/+$/,"");
