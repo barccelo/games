@@ -106,3 +106,22 @@
 .contact-form #secretEye[aria-pressed=true]{color:#a7ff89;background:#243345}
 .contact-form .contact-submit{height:47px;white-space:nowrap}
 @media(max-width:570px){.contact-form{grid-template-columns:1fr}.contact-form .contact-submit{width:100%}}
+
+.ab-track-wrap{overflow-x:auto;overscroll-behavior-x:contain;margin:22px 0 10px;padding:4px 0 10px}
+.ab-track{display:grid;grid-template-columns:repeat(10,minmax(51px,1fr));gap:6px;min-width:575px}
+.ab-cell{border:1px solid #465267;border-radius:12px;background:#101722;color:#dce5f4;min-height:60px;min-width:0;font-size:22px;font-weight:800;padding:5px}
+.ab-cell.active{border:2px solid #a7ff89;color:#a7ff89}
+.ab-cell.correct{background:#23563b;color:#b9ffcb}
+.ab-cell.passed{background:#604929;color:#ffe1a3}
+.ab-focus .challenge-word{min-height:135px}
+.ab-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.ab-actions button{flex:1 1 135px}
+.ab-setup-row{margin:18px 0}
+.ab-setup-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.ab-setup-buttons button{flex:1 1 135px}
+.ab-editor{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0}
+.ab-edit-item{display:flex;align-items:center;gap:10px;min-width:0}
+.ab-edit-item span{font-size:22px;min-width:24px;color:#a7ff89}
+.ab-edit-item input{min-width:0}
+.ab-save{width:100%}
+@media(max-width:600px){.ab-editor{grid-template-columns:1fr}.ab-track{min-width:555px}.ab-actions button{font-size:14px}.ab-focus .challenge-word{font-size:clamp(35px,9vw,54px)}}

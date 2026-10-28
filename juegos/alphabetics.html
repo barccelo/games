@@ -1,17 +1,29 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
-<title>Alphabetics · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=1"></script><script defer src="./alphabetics.js?v=1"></script></head>
-<body class="challenge-page"><main class="wrap">
+<title>Alphabetics · Games</title><link rel="stylesheet" href="./ui.css?v=7"><script defer src="./alphabetics.js?v=2"></script></head>
+<body class="challenge-page alphabetics-page"><main class="wrap">
 <header class="top"><a class="back" href="../">← Games</a><span class="brand">Alphabetics</span></header>
 <h1>Alphabetics</h1>
-<div class="challenge-metrics"><span class="tag" id="abPhase">Primera mitad · 30 s</span><span id="abCount" class="secondary">0 de 10 acertadas</span></div>
-<section class="panel challenge-stage">
-<div id="abLetter" class="challenge-letter">A</div><div id="abWord" class="challenge-word">Árbol</div>
+<section class="panel alphabetics-board">
+<div class="row between"><span id="abPhase" class="tag">Primera mitad · 30 segundos</span><span id="abCount" class="secondary">0 de 10 aciertos</span></div>
+<div class="ab-track-wrap"><div class="ab-track" id="abTrack" aria-label="Diez letras de la partida"></div></div>
+<div class="ab-focus">
+<div id="abWord" class="challenge-word">ÁRBOL</div>
 <div id="abTime" class="challenge-time" role="timer">00:30</div>
-<div class="stack"><button id="abHit">✓ Acertó</button><button id="abPass" class="alt">Pasar</button><button id="abReplace" class="alt">Sustituir palabra</button></div>
-<div class="row challenge-controls"><button id="abStart">Iniciar 30 segundos</button><button id="abPause" class="alt" disabled>Pausar</button></div>
-<p class="secondary" id="abStatus" role="status">Diez palabras en orden alfabético.</p>
+</div>
+<div class="ab-actions"><button id="abHit">✓ Acertó</button><button id="abPass" class="alt">Pasar</button><button id="abReplace" class="alt">Sustituir palabra</button></div>
+<div class="ab-actions"><button id="abStart">Iniciar 30 segundos</button><button id="abPause" class="alt" disabled>Pausar</button></div>
+<p id="abStatus" class="secondary" role="status">Da pistas de una sola palabra. Solo quien da las pistas puede pasar.</p>
 </section>
-<details class="panel" id="abOptions"><summary>Preparar palabras</summary><div class="row" style="margin-top:18px"><div class="col"><label for="abLevel">Dificultad</label><select id="abLevel"><option value="fácil">Fácil</option><option value="medio" selected>Media</option><option value="difícil">Difícil</option></select></div></div>
-<div class="stack" style="margin-top:16px"><button id="abGenerate">Nuevas palabras</button><button id="abLocal" class="alt">Usar palabras incluidas</button></div></details>
+<details class="panel" id="abOptions">
+<summary>Preparar las 10 palabras</summary>
+<div class="row ab-setup-row">
+<div class="col"><label for="abStartMode">Letra inicial</label><select id="abStartMode"><option value="random" selected>Aleatoria</option><option value="A">Desde la A</option></select></div>
+<div class="col"><label for="abLevel">Dificultad</label><select id="abLevel"><option value="fácil">Fácil</option><option value="medio" selected>Media</option><option value="difícil">Difícil</option></select></div>
+</div>
+<div class="ab-setup-buttons"><button id="abLocal" class="alt">Preparar recorrido</button><button id="abGenerate">Generar con IA</button></div>
+<p class="secondary">También puedes editar cada respuesta. Las diez palabras deben comenzar por la letra indicada.</p>
+<div id="abEditor" class="ab-editor"></div>
+<button id="abSave" class="ab-save">Guardar mis palabras</button>
+</details>
 </main></body></html>
