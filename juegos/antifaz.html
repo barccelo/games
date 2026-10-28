@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
+<title>Antifaz · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=1"></script><script defer src="./rapidos.js?v=1"></script></head>
+<body data-quick="antifaz" class="challenge-page"><main class="wrap">
+<header class="top"><a class="back" href="../">← Games</a><span class="brand">Antifaz</span></header>
+<h1>Antifaz</h1><section class="panel challenge-stage">
+<div class="challenge-metrics"><span class="tag">Adivina la palabra</span><span id="quickCounter" class="secondary">Palabra 1</span></div>
+<div id="quickWord" class="challenge-word" aria-live="polite">?</div>
+<p class="secondary center">Pista de máximo 10 segundos o 8 palabras.</p>
+<div class="challenge-time" id="quickClock">00:10</div><div class="stack"><button id="quickStart">Iniciar 10 segundos</button><button id="quickPause" class="alt">Pausar</button></div><div class="stack" style="margin-top:10px"><button id="quickHit">✓ Adivinó</button><button id="quickNext" class="alt">Siguiente palabra</button></div><p id="quickStatus" class="secondary" role="status"></p></section>
+<section class="panel"><div class="row between"><span>Aciertos</span><strong id="quickHits">0</strong></div><button id="quickGenerate" class="alt">Nuevas palabras</button></section>
+</main></body></html>

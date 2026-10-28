@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
+<title>Dobles y triples · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=1"></script><script defer src="./rapidos.js?v=1"></script></head>
+<body data-quick="dobles" class="challenge-page"><main class="wrap">
+<header class="top"><a class="back" href="../">← Games</a><span class="brand">Dobles y triples</span></header>
+<h1>Dobles y triples</h1><section class="panel challenge-stage">
+<span class="tag" id="doubleMode">Dobles</span>
+<div id="quickWord" class="challenge-word" aria-live="polite">Animales</div>
+<p class="center secondary">Categoría de la ronda</p>
+<div class="stack"><button id="chooseTwo" class="alt">Dobles</button><button id="chooseThree" class="alt">Triples</button></div>
+<div class="challenge-time" id="quickClock">01:00</div>
+<div class="stack"><button id="quickStart">Iniciar tiempo</button><button id="quickPause" class="alt">Pausar</button><button id="quickNext" class="alt">Otra categoría</button></div><p id="quickStatus" class="secondary" role="status">Elige Dobles o Triples según la suma de los dedos.</p></section><section class="panel"><h2>Puntos por equipo</h2><div class="scores">
+<div class="score"><span>Equipo A</span><strong id="quickA">0</strong><button data-quickscore="0" class="smallbtn alt">+ Punto</button></div>
+<div class="score"><span>Equipo B</span><strong id="quickB">0</strong><button data-quickscore="1" class="smallbtn alt">+ Punto</button></div>
+</div></section><div class="row" style="margin-top:16px"><button id="quickGenerate" class="alt">Nuevas categorías</button></div>
+</main></body></html>

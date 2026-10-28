@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
+<title>Adivina la canción · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=1"></script><script defer src="./rapidos.js?v=1"></script></head>
+<body data-quick="cancion" class="challenge-page"><main class="wrap">
+<header class="top"><a class="back" href="../">← Games</a><span class="brand">Adivina la canción</span></header>
+<h1>Adivina la canción</h1><section class="panel challenge-stage">
+<div class="challenge-metrics"><span class="tag">Palabra de la ronda</span><span id="quickCounter" class="secondary">Palabra 1</span></div>
+<div id="quickWord" class="challenge-word" aria-live="polite">?</div>
+<p class="secondary center">Canta una canción que contenga esta palabra.</p>
+<button id="quickNext" class="challenge-primary">Otra palabra</button><p id="quickStatus" class="secondary" role="status"></p></section><section class="panel"><h2>Puntos por equipo</h2><div class="scores">
+<div class="score"><span>Equipo A</span><strong id="quickA">0</strong><button data-quickscore="0" class="smallbtn alt">+ Punto</button></div>
+<div class="score"><span>Equipo B</span><strong id="quickB">0</strong><button data-quickscore="1" class="smallbtn alt">+ Punto</button></div>
+</div></section><div class="row" style="margin-top:16px"><button id="quickGenerate" class="alt">Nuevas palabras</button></div>
+</main></body></html>
