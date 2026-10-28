@@ -1,11 +1,7 @@
 (() => {
   const $ = id => document.getElementById(id);
   const api = "https://games-gemini.mbckp-at.workers.dev";
-  const bank = {
-    "Películas o series":["Titanic","Spider-Man","Harry Potter","El Rey León","La casa de papel","Buscando a Nemo","Frozen","Toy Story","Los Simpson","Mi pobre angelito","Shrek","Star Wars","El juego del calamar","Barbie","Avatar"],
-    "Personas o personajes":["Sherlock Holmes","Cleopatra","Albert Einstein","Cenicienta","Batman","La sirenita","Pinocho","Superman","Frida Kahlo","Napoleón","Robin Hood","Drácula","Charlie Chaplin","Wonder Woman","El Zorro"],
-    "Lugares":["Aeropuerto","Playa","Biblioteca","Museo","Torre Eiffel","Estadio","Supermercado","Hospital","Montaña","Parque de diversiones","Estación de tren","Restaurante","Desierto","Castillo","Zoológico"]
-  };
+  const bank = {"Películas o series":["Titanic","Spider-Man","Harry Potter","El Rey León","La casa de papel","Buscando a Nemo","Frozen","Toy Story","Los Simpson","Mi pobre angelito","Shrek","Star Wars","El juego del calamar","Barbie","Avatar","Coco","Intensamente","Encanto","Moana","La Cenicienta","La Bella y la Bestia","La Sirenita","Kung Fu Panda","Madagascar","Jurassic Park","Jumanji","La Momia","Super Mario Bros","Pokémon","Sonic","Batman","Superman","Stranger Things","La era de hielo","Dumbo","Aladdín","Bambi","Ratatouille","Cars","Up","WALL-E","Monsters Inc","Matilda","Piratas del Caribe","Rocky","Rápidos y furiosos","Misión imposible","Los increíbles","El Señor de los Anillos","Mi villano favorito","El Grinch","Scooby-Doo","Tom y Jerry","Los Picapiedra","El Chavo del 8","Dragon Ball","La Pantera Rosa","Los Minions","Lilo y Stitch","Los Cazafantasmas"],"Personas o personajes":["Sherlock Holmes","Cleopatra","Albert Einstein","Cenicienta","Batman","La sirenita","Pinocho","Superman","Frida Kahlo","Napoleón","Robin Hood","Drácula","Charlie Chaplin","Wonder Woman","El Zorro","Mickey Mouse","Minnie Mouse","Pato Donald","Super Mario","Luigi","Joker","Harry Potter","Hermione Granger","Voldemort","Darth Vader","Yoda","Marilyn Monroe","Michael Jackson","Shakira","Bad Bunny","Karol G","Cristiano Ronaldo","Lionel Messi","Pelé","Simón Bolívar","Leonardo da Vinci","Vincent van Gogh","Pablo Picasso","Caperucita Roja","Blancanieves","Rapunzel","Peter Pan","Capitán Garfio","Frankenstein","El Chapulín Colorado","El Chavo del 8","Don Quijote","Sancho Panza","Snoopy","Popeye","Homero Simpson","Bart Simpson","Goku","Naruto","Pikachu","Sonic","Bob Esponja","Patricio Estrella","Peppa Pig","Mr. Bean","Santa Claus","Bugs Bunny"],"Lugares":["Aeropuerto","Playa","Biblioteca","Museo","Torre Eiffel","Estadio","Supermercado","Hospital","Montaña","Parque de diversiones","Estación de tren","Restaurante","Desierto","Castillo","Zoológico","Cine","Teatro","Escuela","Universidad","Banco","Iglesia","Catedral","Río","Lago","Volcán","Selva","Bosque","Isla","Puerto","Palacio","Gran Muralla China","Estatua de la Libertad","Taj Mahal","Coliseo Romano","Pirámides de Egipto","Machu Picchu","Chichén Itzá","El Vaticano","Times Square","Parque Central","Disney World","Hollywood","El Polo Norte","Luna","Marte","Estación espacial","Fondo del mar","Cueva","Cascada","Glaciar","Cancha de fútbol","Piscina","Gimnasio","Farmacia","Panadería","Cafetería","Peluquería","Tienda de ropa","Estación de bomberos","Taller mecánico"]};
   const defaultState = {names:["Equipo A","Equipo B"],scores:[0,0],turn:0,round:1};
   let state=defaultState;
   try {
@@ -126,6 +122,16 @@
     state.scores=[0,0];state.turn=0;state.round=1;
     remaining=duration;correct=0;passed=0;
     save();render();notice("Partida reiniciada.");
+  });
+  const customKey="games-charadas-custom";
+  try{$("chManual").value=localStorage.getItem(customKey)||""}catch{}
+  $("chUseManual").addEventListener("click",()=>{
+    const items=$("chManual").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+    if(!items.length){$("chManualStatus").textContent="Escribe al menos una palabra.";return;}
+    try{localStorage.setItem(customKey,items.join("\n"))}catch{}
+    load(items);
+    $("chSettings").open=false;
+    $("chManualStatus").textContent="Lista personalizada cargada.";
   });
   $("chLocal").addEventListener("click",()=>{
     load(fromBank($("chCategory").value).slice(0,chosenCount()));
