@@ -40,8 +40,11 @@ const tokenRead=()=>{try{return sessionStorage.getItem("games-ai-access")||""}ca
 function local(count,category){
  if(mode==="numeros")return Array.from({length:count},()=>{const a=random(98)+1,b=random(98)+1;return {word:a+" + "+b,category:"Suma",clue:String(a+b)};});
  if(mode==="letras"){
-  const starts="ABCDEFGHIJKLMNÑOPRSTUV";const ends="AEINORS";
-  return Array.from({length:count},()=>({word:starts[random(starts.length)]+" — "+ends[random(ends.length)],category:"Letras",clue:""}));
+  const examples=["CASA","LIBRO","RELOJ","MESA","TREN","CARACOL","ÁRBOL","NUBE","LIMÓN","HELADO","GATO","ESCUELA","PAPEL","FLOR","PLATO","LÁPIZ","SOL","OVEJA","TIGRE","BICICLETA","ZAPATO","JARDÍN"];
+  return Array.from({length:count},()=>{
+   const example=examples[random(examples.length)];
+   return {word:example[0]+" — "+example.at(-1),category:"Letras",clue:""};
+  });
  }
  let bank=groups[mode]||groups.clave;
  let sample=mode==="alphabetics"||mode==="rosco"?bank.slice(0,count):shuffled(bank).slice(0,count);
