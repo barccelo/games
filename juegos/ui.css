@@ -165,3 +165,6 @@
 .charades-manual textarea{width:100%;background:#0e1520;border:1px solid #435065;color:#eef2f7;border-radius:12px;padding:13px;font:inherit;resize:vertical;min-height:120px}
 .charades-manual button{margin-top:10px}
 .charades-manual textarea:focus{outline:2px solid #a7ff89}
+.clave-manual{margin-top:16px}.clave-manual summary{font-weight:650;cursor:pointer;color:#d9e4ef}
+.clave-manual .row{margin-top:12px;align-items:end}.clave-manual .col{min-width:140px}
+@media(max-width:580px){.clave-manual .row>button{width:100%}}

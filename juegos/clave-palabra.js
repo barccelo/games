@@ -27,6 +27,14 @@
     $("clWordStatus").textContent=result.offline?"Se usaron claves incluidas.":"Nuevas claves preparadas.";
     button.disabled=false;
   });
+  $("clUseManual").addEventListener("click",()=>{
+    const custom=$("clManualWord").value.trim().toLocaleUpperCase("es");
+    if(!custom){$("clWordStatus").textContent="Escribe una clave antes de aplicarla.";return;}
+    words=[custom,...words.filter(w=>w!==custom)];position=0;shown=true;
+    render();
+    $("clWordStatus").textContent="Clave personalizada preparada.";
+    document.querySelector(".clave-manual").open=false;
+  });
   ["clHit","clNew"].forEach(id=>$(id).addEventListener("click",next));
   render();
 })();
