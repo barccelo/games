@@ -81,8 +81,9 @@ byId("modalTitle").textContent=g.name;byId("modalDesc").textContent=g.desc;byId(
 byId("rules").innerHTML=g.rules.map(x=>"<li>"+safe(x)+"</li>").join("");
 let a="";if(g.url)a='<a class="primary" target="_blank" rel="noopener noreferrer" href="'+safe(g.url)+'">Abrir juego ↗</a>';
 if(g.source)a+='<a class="secondary" target="_blank" rel="noopener noreferrer" href="'+safe(g.source)+'">Ver proyecto ↗</a>';
+if(["contacto","charadas","clave"].includes(g.id))a+='<a class="primary" href="./herramientas.html?juego='+g.id+'">Abrir interfaz de apoyo ↗</a>';
 a+='<button class="secondary" id="dismiss">Cerrar</button>';
-byId("actions").innerHTML=a;byId("modalNote").textContent=g.note||(!g.url&&g.type==="assist"?"La interfaz de apoyo para este juego se incorporará en una siguiente fase.":!g.url&&!g.source?"Este juego se realiza presencialmente; aquí se conservan sus reglas.":"");
+byId("actions").innerHTML=a;byId("modalNote").textContent=g.note||(!g.url&&g.type==="assist"?"La interfaz de apoyo de este juego estará disponible en una siguiente fase.":!g.url&&!g.source?"Este juego se realiza presencialmente; aquí se conservan sus reglas.":"");
 byId("dismiss").onclick=()=>byId("dialog").close();byId("dialog").showModal();
 }
 document.addEventListener("click",e=>{const fav=e.target.closest("[data-fav]");if(fav){const id=fav.dataset.fav;favorites.has(id)?favorites.delete(id):favorites.add(id);try{localStorage.setItem("games-favs",JSON.stringify([...favorites]))}catch{}render();return}const open=e.target.closest("[data-open]");if(open)openGame(open.dataset.open);const chip=e.target.closest("[data-filter]");if(chip){filter=chip.dataset.filter;document.querySelectorAll("[data-filter]").forEach(c=>c.classList.toggle("active",c===chip));render()}});
