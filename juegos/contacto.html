@@ -4,8 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0d1119">
 <title>Contacto · Games</title>
-<link rel="stylesheet" href="./ui.css?v=5">
-<script defer src="./contacto.js?v=1"></script>
+<link rel="stylesheet" href="./ui.css?v=6">
+<script defer src="./contacto.js?v=2"></script>
 </head>
 <body data-game="contacto"><main class="wrap contact-page">
 <header class="top"><a class="back" href="../">← Games</a><span class="brand">Contacto</span></header>
@@ -13,9 +13,9 @@
 <section class="panel setup-panel" id="contactSetup">
 <h2>Palabra del Guardián</h2>
 <p>Escríbela en privado. Solo se mostrará la primera letra al empezar.</p>
-<form id="contactForm" class="row">
-<div class="col"><label for="secret">Palabra secreta</label><input id="secret" type="password" maxlength="35" autocomplete="off" autocapitalize="characters" placeholder="Introduce una palabra" required></div>
-<button type="submit">Comenzar partida</button>
+<form id="contactForm" class="contact-form">
+<div class="contact-entry"><label for="secret">Palabra secreta</label><div class="contact-input"><input id="secret" type="password" maxlength="35" autocomplete="off" autocapitalize="characters" placeholder="Introduce una palabra" required><button id="secretEye" type="button" aria-label="Mostrar palabra mientras se escribe" aria-pressed="false" title="Mostrar palabra"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+<button class="contact-submit" type="submit">Comenzar partida</button>
 </form>
 <p id="secretHelp" class="secondary">De 2 a 35 letras, sin espacios.</p>
 </section>

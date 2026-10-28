@@ -47,6 +47,14 @@
     updateClock();
   }
 
+  $("secretEye").addEventListener("click",()=>{
+    const input=$("secret");
+    const showing=input.type==="text";
+    input.type=showing?"password":"text";
+    $("secretEye").setAttribute("aria-pressed",String(!showing));
+    $("secretEye").setAttribute("aria-label",showing?"Mostrar palabra mientras se escribe":"Ocultar palabra mientras se escribe");
+    input.focus();
+  });
   $("contactForm").addEventListener("submit",event=>{
     event.preventDefault();
     const value=$("secret").value.trim().normalize("NFC").toLocaleUpperCase("es");
@@ -61,6 +69,8 @@
     elapsed=0;
     finished=false;
     $("secret").value="";
+    $("secret").type="password";
+    $("secretEye").setAttribute("aria-pressed","false");
     $("contactSecret").textContent=word;
     $("contactSecret").hidden=true;
     $("contactEye").setAttribute("aria-pressed","false");
