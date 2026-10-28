@@ -1,58 +1,19 @@
-/* Proxy privado de Gemini para Games. Nunca publiques las claves en GitHub. */
-const ORIGIN="https://barccelo.github.io";
-const MODE={
-clave:"Palabras secretas (password) para adivinar con pistas de una sola palabra. Evita frases largas.",
-charadas:"Películas o programas, personas/personajes y lugares reconocibles para representar con mímica, sin sonidos.",
-alphabetics:"Diez palabras de iniciales consecutivas en orden alfabético, cada una con pista de una sola palabra.",
-cancion:"Palabras conocidas frecuentes en canciones en español. No incluyas letras protegidas ni títulos.",
-prohibida:"Palabras cotidianas para una dinámica de palabra prohibida.",
-antifaz:"Palabras concretas para describir con un máximo de ocho palabras en diez segundos.",
-dobles:"Categorías para mencionar parejas y tríos de cosas relacionadas.",
-papelito:"Palabras, lugares, personajes y conceptos aptos para descripción, palabra única y mímica.",
-stop:"Categorías temáticas originales para jugar STOP, no respuestas.",
-rosco:"Palabras que comiencen por iniciales distintas, en orden alfabético, con una definición breve precisa.",
-letras:"Pares de letras españolas para encontrar una palabra que empiece y termine con ellas; en word escribe el par A-Z y en clue un ejemplo válido.",
-numeros:"Pares de números enteros entre 1 y 99; en word escribe A+B y en clue su suma correcta."
-};
-const headers=(origin)=>({"Access-Control-Allow-Origin":origin===ORIGIN?ORIGIN:"null","Access-Control-Allow-Methods":"POST,OPTIONS","Access-Control-Allow-Headers":"Content-Type,X-Games-Access","Vary":"Origin","Cache-Control":"no-store","X-Content-Type-Options":"nosniff","Content-Type":"application/json; charset=utf-8"});
-const reply=(body,status,origin)=>new Response(JSON.stringify(body),{status,headers:headers(origin)});
-export default {async fetch(request,env){
- const origin=request.headers.get("Origin")||"";
- if(request.method==="OPTIONS")return origin===ORIGIN?new Response(null,{status:204,headers:headers(origin)}):new Response(null,{status:403});
- if(request.method!=="POST")return reply({error:"Método no permitido"},405,origin);
- if(origin!==ORIGIN)return reply({error:"Origen no permitido"},403,origin);
- if(!env.GEMINI_API_KEY||!env.GAME_HOST_TOKEN)return reply({error:"Servicio no configurado"},503,origin);
- const token=request.headers.get("X-Games-Access")||"";
- if(!token||token.length>256||token!==env.GAME_HOST_TOKEN)return reply({error:"Código de anfitrión incorrecto"},401,origin);
- if(Number(request.headers.get("Content-Length")||0)>5000)return reply({error:"Solicitud demasiado grande"},413,origin);
- let input;try{input=await request.json()}catch{return reply({error:"JSON inválido"},400,origin)}
- const mode=String(input?.mode||"");if(!Object.hasOwn(MODE,mode))return reply({error:"Juego no válido"},400,origin);
- const count=mode==="alphabetics"?10:mode==="rosco"?27:Math.max(1,Math.min(15,Number.parseInt(input.count,10)||1));
- const category=String(input.category||"").slice(0,60);
- const level=["fácil","medio","difícil"].includes(input.level)?input.level:"medio";
- const excluded=Array.isArray(input.exclude)?input.exclude.filter(s=>typeof s==="string").slice(-30).map(s=>s.slice(0,70)):[];
- const prompt="Eres un generador de contenido para juegos familiares en español. Devuelve exclusivamente JSON siguiendo el esquema. "+MODE[mode]+" Genera "+count+" elementos únicos. Dificultad: "+level+". Categoría solicitada: "+category+". Evitar: "+excluded.join(", ")+". Cada objeto debe tener word (estímulo o respuesta), category y clue (pista o cadena vacía). Evita material ofensivo o no apropiado. No incluyas explicaciones. No repitas palabras. Para rosco, usa una inicial diferente por palabra y una definición verificable.";
- const schema={type:"OBJECT",properties:{items:{type:"ARRAY",items:{type:"OBJECT",properties:{word:{type:"STRING"},category:{type:"STRING"},clue:{type:"STRING"}},required:["word","category","clue"]}}},required:["items"]};
- const model=env.GEMINI_MODEL||"gemini-3.5-flash-lite";
- let upstream;
- try{upstream=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":env.GEMINI_API_KEY},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{responseMimeType:"application/json",responseSchema:schema,temperature:0.85,maxOutputTokens:6000}}),signal:AbortSignal.timeout(25000)});}
- catch{return reply({error:"No se pudo conectar con Gemini"},502,origin)}
- if(!upstream.ok)return reply({error:upstream.status===429?"Límite de solicitudes de Gemini":"Gemini devolvió error HTTP "+upstream.status},502,origin);
- try{
-  const data=await upstream.json();
-  const raw=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
-  const output=JSON.parse(raw).items;
-  if(!Array.isArray(output))throw Error("Array expected");
-  const items=[],seen=new Set();
-  for(const item of output){
-   const word=String(item?.word||"").trim().slice(0,110);
-   const category=String(item?.category||"").trim().slice(0,80);
-   const clue=String(item?.clue||"").trim().slice(0,250);
-   const key=word.toLocaleLowerCase("es");
-   if(word&&!seen.has(key)){seen.add(key);items.push({word,category,clue})}
-   if(items.length>=count)break;
-  }
-  if(!items.length)throw Error("Empty");
-  return reply({items,provider:"gemini"},200,origin);
- }catch{return reply({error:"Gemini no devolvió datos válidos"},502,origin)}
-}};
+const O="https://barccelo.github.io";export default {async fetch(req,env){const origin=req.headers.get("Origin");const h={"Access-Control-Allow-Origin":origin===O?O:"null","Access-Control-Allow-Headers":"Content-Type,X-Games-Access","Access-Control-Allow-Methods":"POST,OPTIONS","Content-Type":"application/json","Cache-Control":"no-store"};const out=(x,n)=>new Response(JSON.stringify(x),{status:n,headers:h});if(req.method==="OPTIONS")return new Response(null,{status:origin===O?204:403,headers:h});if(req.method==="GET")return new Response(JSON.stringify({service:"games-gemini",status:"online",geminiConfigured:Boolean(env.GEMINI_API_KEY),hostAuthenticationConfigured:Boolean(env.GAME_HOST_TOKEN)}),{headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"}});if(req.method!=="POST"||origin!==O)return out({error:"Solicitud no permitida"},403);if(!env.GEMINI_API_KEY||!env.GAME_HOST_TOKEN)return out({error:"Faltan secretos en Cloudflare"},503);if(req.headers.get("X-Games-Access")!==env.GAME_HOST_TOKEN)return out({error:"Código de anfitrión incorrecto"},401);let q;try{q=await req.json()}catch{return out({error:"JSON inválido"},400)}const modes=["clave","charadas","alphabetics","cancion","prohibida","antifaz","dobles","papelito","stop","rosco","letras","numeros"];if(!modes.includes(q.mode))return out({error:"Juego inválido"},400);const count=q.mode==="alphabetics"?10:q.mode==="rosco"?27:Math.min(15,Math.max(1,parseInt(q.count)||1));const prompt="Genera "+count+" elementos originales para el juego "+q.mode+" en español, categoría "+String(q.category||"").slice(0,60)+", dificultad "+String(q.level||"medio").slice(0,20)+". Responde solo JSON con items, cada uno con word, category y clue. Evita "+(Array.isArray(q.exclude)?q.exclude.slice(0,20).join(", "):"")+". Para charadas usa películas, personas o lugares; para clave usa palabras adivinables mediante pistas de una palabra; para alphabetics diez iniciales consecutivas, para rosco 27 letras distintas incluyendo Ñ. Para numeros incluye suma correcta en clue; para letras un par inicial-final y ejemplo válido en clue.";let response;try{response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":env.GEMINI_API_KEY},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{responseMimeType:"application/json",responseSchema:{type:"OBJECT",properties:{items:{type:"ARRAY",items:{type:"OBJECT",properties:{word:{type:"STRING"},category:{type:"STRING"},clue:{type:"STRING"}},required:["word","category","clue"]}}},required:["items"]},thinkingConfig:{thinkingLevel:"minimal"},maxOutputTokens:8192}}),signal:AbortSignal.timeout(25000)})}catch{return out({error:"Conexión con Gemini fallida"},502)}if(!response.ok){
+  let status="";
+  try{const body=await response.json();status=String(body?.error?.status||"").slice(0,48)}catch{}
+  return out({error:"Gemini rechazó la solicitud ("+response.status+(status?", "+status:"")+")",code:"UPSTREAM_HTTP"},502);
+}
+let data;
+try{data=await response.json()}catch{return out({error:"El proveedor devolvió un formato no válido",code:"UPSTREAM_JSON"},502)}
+const candidate=data?.candidates?.[0];
+const finish=String(candidate?.finishReason||data?.promptFeedback?.blockReason||"UNKNOWN").slice(0,40);
+const rawText=(candidate?.content?.parts||[]).filter(x=>typeof x?.text==="string").map(x=>x.text).join("").trim();
+if(!rawText)return out({error:"Gemini no devolvió texto ("+finish+"). Vuelve a intentarlo.",code:"EMPTY_CONTENT"},502);
+let parsed;
+try{parsed=JSON.parse(rawText)}catch{return out({error:"Gemini devolvió JSON incompleto ("+finish+").",code:"INVALID_JSON"},502)}
+const values=Array.isArray(parsed?.items)?parsed.items:Array.isArray(parsed)?parsed:null;
+if(!values)return out({error:"La respuesta no contiene una lista de elementos",code:"INVALID_SHAPE"},502);
+const items=values.filter(x=>x&&typeof x.word==="string"&&x.word.trim()).slice(0,count).map(x=>({word:x.word.trim().slice(0,110),category:String(x.category||"").slice(0,80),clue:String(x.clue||"").slice(0,250)}));
+if(!items.length)return out({error:"La lista devuelta por Gemini está vacía",code:"EMPTY_LIST"},502);
+return out({items,provider:"gemini"},200);
+}}
