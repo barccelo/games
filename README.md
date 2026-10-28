@@ -31,3 +31,17 @@ El sitio principal es `index.html`. Puede hospedarse en GitHub Pages, Cloudflare
 ## Fuente
 
 Las reglas se resumen del documento suministrado «Resumen Oficial de Juegos y Dinámicas»; los detalles que no aparecen en el documento se dejan pendientes de definición.
+
+
+## Generación de contenido con Gemini
+
+Se añadieron generadores de palabras, pistas o categorías para **La clave es, Charadas Pro Max, Letras cruzadas, Números cruzados, Alphabetics, Adivina la canción, Palabra prohibida, Antifaz, Dobles y triples, Papelito, STOP** y un asistente para preparar un rosco de Pasapalabras.
+
+- Charadas y La clave es integran el generador dentro de su interfaz de puntuación o cronómetro.
+- Para los otros juegos hay una página común: \`juegos/generador.html?juego=alphabetics\` (sustituir el modo).
+- Todas las interfaces cuentan con un banco local o generación aleatoria para jugar sin servicios externos.
+- La generación real mediante IA **requiere desplegar el proxy privado** \`gemini-worker/\`; no está operativa solo por publicar GitHub Pages.
+- Para activar Gemini, configura \`GEMINI_API_KEY\` y \`GAME_HOST_TOKEN\` como secretos del Worker en Cloudflare. Sigue \`gemini-worker/README.md\`. No copies ninguna clave privada en el catálogo, HTML o JavaScript público.
+- La URL HTTPS del Worker se almacena en el navegador del anfitrión; el código de acceso se conserva únicamente durante la sesión de la pestaña.
+
+El generador de rosco no modifica la app independiente de Pasapalabras: por ahora proporciona una lista que el anfitrión puede copiar para preparar el juego.
