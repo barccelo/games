@@ -168,3 +168,10 @@
 .clave-manual{margin-top:16px}.clave-manual summary{font-weight:650;cursor:pointer;color:#d9e4ef}
 .clave-manual .row{margin-top:12px;align-items:end}.clave-manual .col{min-width:140px}
 @media(max-width:580px){.clave-manual .row>button{width:100%}}
+
+.duel-custom{margin:12px auto 40px;max-width:650px;border:1px solid #344153;border-radius:16px;padding:17px;background:#171f2b}
+.duel-custom summary,.ro-edit summary{font-weight:700;cursor:pointer}
+.duel-custom .row{margin:14px 0;align-items:end}.duel-custom .col{min-width:125px}
+.duel-custom button,.ro-edit button{margin-top:10px}
+.ro-edit .col{min-width:180px}
+@media(max-width:550px){.duel-custom{margin-top:0}.duel-custom .row>.col{min-width:100%}}

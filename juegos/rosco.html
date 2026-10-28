@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119"><title>Preparar rosco · Games</title><link rel="stylesheet" href="./ui.css?v=5"><script defer src="./palabras.js?v=2"></script><script defer src="./rosco.js?v=1"></script></head>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119"><title>Preparar rosco · Games</title><link rel="stylesheet" href="./ui.css?v=10"><script defer src="./palabras.js?v=2"></script><script defer src="./rosco.js?v=2"></script></head>
 <body class="challenge-page"><main class="wrap">
 <header class="top"><a class="back" href="../">← Games</a><span class="brand">Preparar rosco</span></header>
 <h1>Preparar rosco</h1><p class="sub">Palabras y definiciones para organizar una partida de Pasapalabras.</p>
@@ -10,6 +10,8 @@
 <div class="stack"><button id="roReveal" class="alt">Mostrar respuesta</button><button id="roNext">Siguiente letra</button></div>
 <p id="roStatus" class="secondary" role="status"></p>
 </section>
-<div class="stack" style="margin-top:16px"><button id="roGenerate">Generar nuevo rosco</button><button id="roCopy" class="alt">Copiar palabras y definiciones</button></div>
+<details class="panel ro-edit"><summary>Escribir mi palabra y definición</summary>
+<div class="row" style="margin-top:14px"><div class="col"><label for="roCustomWord">Palabra de esta letra</label><input id="roCustomWord" type="text" maxlength="80" autocomplete="off"></div><div class="col"><label for="roCustomClue">Definición</label><input id="roCustomClue" type="text" maxlength="220" autocomplete="off"></div></div>
+<button type="button" id="roSaveCustom" class="alt">Guardar esta letra</button></details><div class="stack" style="margin-top:16px"><button id="roGenerate">Generar nuevo rosco</button><button id="roCopy" class="alt">Copiar palabras y definiciones</button></div>
 <p class="secondary">El rosco es una herramienta de preparación. <a href="https://pasapalabras.mbckp-at.workers.dev" target="_blank" rel="noopener noreferrer">Abrir el juego Pasapalabras</a>.</p>
 </main></body></html>

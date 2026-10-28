@@ -25,5 +25,24 @@
   document.getElementById("showSum")?.addEventListener("click",()=>{
     document.getElementById("sum").textContent=Number(first.textContent)+Number(second.textContent);
   });
+  document.getElementById("applyPair").addEventListener("click",()=>{
+    const rawA=document.getElementById("customFirst").value.trim().toLocaleUpperCase("es");
+    const rawB=document.getElementById("customSecond").value.trim().toLocaleUpperCase("es");
+    let a=rawA,b=rawB;
+    if(kind==="letras"){
+      if(!/^[A-ZÁÉÍÓÚÜÑ]$/.test(a)||!/^[A-ZÁÉÍÓÚÜÑ]$/.test(b)){
+        document.getElementById("pairStatus").textContent="Escribe una sola letra en cada campo.";return;
+      }
+    } else {
+      a=Number(a);b=Number(b);
+      if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1||a>999||b>999){
+        document.getElementById("pairStatus").textContent="Escribe dos números enteros entre 1 y 999.";return;
+      }
+    }
+    first.textContent=a;second.textContent=b;previous=a+":"+b;
+    const sum=document.getElementById("sum");if(sum)sum.textContent="";
+    document.getElementById("pairStatus").textContent="Combinación preparada.";
+    document.querySelector(".duel-custom").open=false;
+  });
   next();
 })();

@@ -11,6 +11,8 @@
     const item=entries[index];
     $("roIndex").textContent="Letra "+alphabet[index]+" · "+(index+1)+" de 27";
     $("roClue").textContent=item.clue;
+    $("roCustomWord").value=item.word;
+    $("roCustomClue").value=item.clue;
     $("roAnswer").textContent=shown?item.word:"Respuesta oculta";
     $("roReveal").textContent=shown?"Ocultar respuesta":"Mostrar respuesta";
     document.querySelectorAll("[data-letter]").forEach(button=>{
@@ -37,6 +39,17 @@
     index=0;shown=false;draw();
     $("roStatus").textContent=result.offline?"Se mantienen las definiciones incluidas.":"Rosco preparado. Revisa las definiciones antes de jugar.";
     button.disabled=false;
+  });
+  $("roSaveCustom").addEventListener("click",()=>{
+    const word=$("roCustomWord").value.trim().toLocaleUpperCase("es");
+    const clue=$("roCustomClue").value.trim();
+    if(!word||!clue||initial(word)!==alphabet[index]){
+      $("roStatus").textContent="Escribe una palabra que empiece por "+alphabet[index]+" y una definición.";return;
+    }
+    entries[index]={word,clue};
+    shown=false;draw();
+    document.querySelector(".ro-edit").open=false;
+    $("roStatus").textContent="Palabra y definición guardadas.";
   });
   $("roCopy").addEventListener("click",async()=>{
     const text=entries.map((item,i)=>alphabet[i]+": "+item.word+" — "+item.clue).join("\n");
