@@ -23,3 +23,21 @@ No hay dependencias ni compilación. Los archivos HTML, CSS y JavaScript se publ
 Las pantallas consumen `games-gemini` en Cloudflare. Si no hay conexión, usan listas incluidas. La clave de Google solo existe como secreto de Cloudflare; no se incorpora al sitio ni al repositorio.
 
 El Worker está en `gemini-worker/`. Consulta su README para despliegue, límites de uso y configuración.
+
+## Pantallas de apoyo
+
+- **Contacto:** el Guardián escribe una palabra y puede mostrarla mientras la introduce. Durante la partida se controlan las letras reveladas, el tiempo y los contactos bloqueados.
+- **Charadas Pro Max:** tres categorías, 182 conceptos incluidos, entrada de palabras propias, mímica durante un máximo de 60 segundos y marcador de dos equipos.
+- **Papelito:** los participantes preparan los papelitos antes de jugar; el mismo conjunto se utiliza en las tres rondas (descripción libre, una palabra y mímica), con turnos de un minuto y puntuación acumulada.
+- **Alphabetics:** diez casillas horizontales, inicio aleatorio o desde A, dos fases de 30 segundos, pasar, sustituir y editar las diez palabras.
+- **Palabra prohibida:** modo de pantalla completa que deja la palabra y el tiempo visibles; tocar durante la presentación inicia o pausa el reloj.
+- **Adivina la canción:** palabras comunes incluidas, marcador y selección manual.
+- **Letras y Números cruzados:** pares aleatorios o introducidos manualmente.
+- **Preparar rosco:** editor por letra de las palabras y definiciones.
+
+El contenido manual se prepara dentro de cada juego. Los generadores remotos son opcionales y tienen alternativas locales.
+
+## Pendiente
+
+- Charadas: marcador configurable con más equipos o participantes individuales, tomando como referencia un contador por persona/equipo con botones grandes para sumar y restar.
+- Revisión visual y pruebas de interacción en móviles reales.
