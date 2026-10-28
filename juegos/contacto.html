@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119"><meta name="description" content="La palabra se revela una letra a la vez después de cada contacto válido."><title>Contacto · Games</title><link rel="stylesheet" href="./ui.css?v=2"><script src="./ui.js?v=2" defer></script></head>
+<body data-game="contacto"><main class="wrap"><header class="top"><a class="back" href="../">← Games</a><span class="brand">Herramienta de juego</span></header><div class="eyebrow">Interfaz de apoyo</div><h1>Contacto</h1><p class="sub">La palabra se revela una letra a la vez después de cada contacto válido.</p>
+
+<section class="panel"><h2>Preparar la palabra</h2><p>El Guardián introduce la palabra en privado. El resto de los participantes solo verá las letras que se vayan revelando.</p>
+<form id="contactForm" class="row"><div class="col"><label for="secret">Palabra secreta</label><input id="secret" type="password" autocomplete="off" maxlength="35" required placeholder="Escribe la palabra secreta" aria-describedby="secretHelp"></div><button type="submit">Preparar</button></form><p class="secondary" id="secretHelp">Una sola palabra, sin espacios (2 a 35 letras).</p></section>
+<section class="panel" aria-label="Panel de contacto"><div class="row between"><span class="tag">Palabra oculta</span><span class="secondary" id="contactProgress">Sin palabra preparada</span></div><div class="letters" id="contactLetters" aria-live="polite"><span>?</span><span>?</span><span>?</span><span>?</span></div>
+<div class="stack"><button id="contactCount" class="alt" disabled>¡Contacto! · 3 segundos</button><button id="contactReveal" disabled>Revelar letra</button></div><div class="hint" id="contactStatus" role="status">Introduce una palabra para comenzar.</div>
+<div class="stack" style="margin-top:13px"><button class="alt" id="contactBlock" disabled>Contacto bloqueado</button><button class="alt" id="contactWon" disabled>Palabra adivinada</button><button class="warn" id="contactReset" disabled>Nueva palabra</button></div>
+<p class="rules">Los jugadores anuncian sus pistas en voz alta. Si dos dicen la misma palabra después de contar «1, 2, 3», el Guardián revela la siguiente letra. Si el Guardián se adelanta, el contacto queda bloqueado.</p></section>
+<div class="footer">Estas herramientas son un complemento para partidas presenciales. Los datos quedan en este navegador.</div>
+</main></body></html>
