@@ -18,7 +18,7 @@
   const shuffle=values=>{const a=[...values];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
   const fromBank=category=>{
     const entries=category&&bank[category]?bank[category]:Object.values(bank).flat();
-    return shuffle(entries);
+    return [...new Set(shuffle(entries))];
   };
   function render() {
     $("chWord").textContent=words[position] || (words.length?"Fin de las palabras":"Prepara las palabras");
