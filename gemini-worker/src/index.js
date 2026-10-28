@@ -33,7 +33,7 @@ export default {async fetch(request,env){
  const excluded=Array.isArray(input.exclude)?input.exclude.filter(s=>typeof s==="string").slice(-30).map(s=>s.slice(0,70)):[];
  const prompt="Eres un generador de contenido para juegos familiares en español. Devuelve exclusivamente JSON siguiendo el esquema. "+MODE[mode]+" Genera "+count+" elementos únicos. Dificultad: "+level+". Categoría solicitada: "+category+". Evitar: "+excluded.join(", ")+". Cada objeto debe tener word (estímulo o respuesta), category y clue (pista o cadena vacía). Evita material ofensivo o no apropiado. No incluyas explicaciones. No repitas palabras. Para rosco, usa una inicial diferente por palabra y una definición verificable.";
  const schema={type:"OBJECT",properties:{items:{type:"ARRAY",items:{type:"OBJECT",properties:{word:{type:"STRING"},category:{type:"STRING"},clue:{type:"STRING"}},required:["word","category","clue"]}}},required:["items"]};
- const model=env.GEMINI_MODEL||"gemini-3.8-flash";
+ const model=env.GEMINI_MODEL||"gemini-3.5-flash-lite";
  let upstream;
  try{upstream=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":env.GEMINI_API_KEY},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{responseMimeType:"application/json",responseSchema:schema,temperature:0.85,maxOutputTokens:6000}}),signal:AbortSignal.timeout(25000)});}
  catch{return reply({error:"No se pudo conectar con Gemini"},502,origin)}
