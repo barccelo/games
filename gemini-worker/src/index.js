@@ -1,19 +1,119 @@
-const O="https://barccelo.github.io";export default {async fetch(req,env){const origin=req.headers.get("Origin");const h={"Access-Control-Allow-Origin":origin===O?O:"null","Access-Control-Allow-Headers":"Content-Type,X-Games-Access","Access-Control-Allow-Methods":"POST,OPTIONS","Content-Type":"application/json","Cache-Control":"no-store"};const out=(x,n)=>new Response(JSON.stringify(x),{status:n,headers:h});if(req.method==="OPTIONS")return new Response(null,{status:origin===O?204:403,headers:h});if(req.method==="GET")return new Response(JSON.stringify({service:"games-gemini",status:"online",geminiConfigured:Boolean(env.GEMINI_API_KEY),hostAuthenticationConfigured:Boolean(env.GAME_HOST_TOKEN)}),{headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"}});if(req.method!=="POST"||origin!==O)return out({error:"Solicitud no permitida"},403);if(!env.GEMINI_API_KEY||!env.GAME_HOST_TOKEN)return out({error:"Faltan secretos en Cloudflare"},503);if(req.headers.get("X-Games-Access")!==env.GAME_HOST_TOKEN)return out({error:"Código de anfitrión incorrecto"},401);let q;try{q=await req.json()}catch{return out({error:"JSON inválido"},400)}const modes=["clave","charadas","alphabetics","cancion","prohibida","antifaz","dobles","papelito","stop","rosco","letras","numeros"];if(!modes.includes(q.mode))return out({error:"Juego inválido"},400);const count=q.mode==="alphabetics"?10:q.mode==="rosco"?27:Math.min(15,Math.max(1,parseInt(q.count)||1));const prompt="Genera "+count+" elementos originales para el juego "+q.mode+" en español, categoría "+String(q.category||"").slice(0,60)+", dificultad "+String(q.level||"medio").slice(0,20)+". Responde solo JSON con items, cada uno con word, category y clue. Evita "+(Array.isArray(q.exclude)?q.exclude.slice(0,20).join(", "):"")+". Para charadas usa películas, personas o lugares; para clave usa palabras adivinables mediante pistas de una palabra; para alphabetics diez iniciales consecutivas, para rosco 27 letras distintas incluyendo Ñ. Para numeros incluye suma correcta en clue; para letras un par inicial-final y ejemplo válido en clue.";let response;try{response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":env.GEMINI_API_KEY},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{responseMimeType:"application/json",responseSchema:{type:"OBJECT",properties:{items:{type:"ARRAY",items:{type:"OBJECT",properties:{word:{type:"STRING"},category:{type:"STRING"},clue:{type:"STRING"}},required:["word","category","clue"]}}},required:["items"]},thinkingConfig:{thinkingLevel:"minimal"},maxOutputTokens:8192}}),signal:AbortSignal.timeout(25000)})}catch{return out({error:"Conexión con Gemini fallida"},502)}if(!response.ok){
-  let status="";
-  try{const body=await response.json();status=String(body?.error?.status||"").slice(0,48)}catch{}
-  return out({error:"Gemini rechazó la solicitud ("+response.status+(status?", "+status:"")+")",code:"UPSTREAM_HTTP"},502);
+const ORIGIN = "https://barccelo.github.io";
+const MODES = new Set(["clave","charadas","alphabetics","cancion","prohibida","antifaz","dobles","papelito","stop","rosco","letras","numeros"]);
+const SCHEMA = {
+  type:"OBJECT",
+  properties:{items:{type:"ARRAY",items:{
+    type:"OBJECT",
+    properties:{word:{type:"STRING"},category:{type:"STRING"},clue:{type:"STRING"}},
+    required:["word","category","clue"]
+  }}},
+  required:["items"]
+};
+
+function send(data,status=200,origin="") {
+  return new Response(JSON.stringify(data),{
+    status,
+    headers:{
+      "Content-Type":"application/json; charset=utf-8",
+      "Cache-Control":"no-store",
+      "Access-Control-Allow-Origin":origin===ORIGIN?ORIGIN:"null",
+      "Access-Control-Allow-Headers":"Content-Type",
+      "Access-Control-Allow-Methods":"POST, OPTIONS",
+      "Vary":"Origin"
+    }
+  });
 }
-let data;
-try{data=await response.json()}catch{return out({error:"El proveedor devolvió un formato no válido",code:"UPSTREAM_JSON"},502)}
-const candidate=data?.candidates?.[0];
-const finish=String(candidate?.finishReason||data?.promptFeedback?.blockReason||"UNKNOWN").slice(0,40);
-const rawText=(candidate?.content?.parts||[]).filter(x=>typeof x?.text==="string").map(x=>x.text).join("").trim();
-if(!rawText)return out({error:"Gemini no devolvió texto ("+finish+"). Vuelve a intentarlo.",code:"EMPTY_CONTENT"},502);
-let parsed;
-try{parsed=JSON.parse(rawText)}catch{return out({error:"Gemini devolvió JSON incompleto ("+finish+").",code:"INVALID_JSON"},502)}
-const values=Array.isArray(parsed?.items)?parsed.items:Array.isArray(parsed)?parsed:null;
-if(!values)return out({error:"La respuesta no contiene una lista de elementos",code:"INVALID_SHAPE"},502);
-const items=values.filter(x=>x&&typeof x.word==="string"&&x.word.trim()).slice(0,count).map(x=>({word:x.word.trim().slice(0,110),category:String(x.category||"").slice(0,80),clue:String(x.clue||"").slice(0,250)}));
-if(!items.length)return out({error:"La lista devuelta por Gemini está vacía",code:"EMPTY_LIST"},502);
-return out({items,provider:"gemini"},200);
-}}
+
+export default {
+  async fetch(request,env) {
+    const origin=request.headers.get("Origin")||"";
+    if(request.method==="GET")
+      return send({service:"games-gemini",status:"online",ready:Boolean(env.GEMINI_API_KEY && env.LIMITER)});
+    if(request.method==="OPTIONS")
+      return new Response(null,{status:origin===ORIGIN?204:403,headers:{
+        "Access-Control-Allow-Origin":origin===ORIGIN?ORIGIN:"null",
+        "Access-Control-Allow-Headers":"Content-Type",
+        "Access-Control-Allow-Methods":"POST, OPTIONS",
+        "Vary":"Origin"
+      }});
+    if(request.method!=="POST" || origin!==ORIGIN)
+      return send({error:"Solicitud no permitida"},403,origin);
+    if(!env.GEMINI_API_KEY || !env.LIMITER)
+      return send({error:"Servicio no disponible"},503,origin);
+    if(Number(request.headers.get("Content-Length")||0)>4096)
+      return send({error:"Solicitud demasiado grande"},413,origin);
+
+    let limited;
+    try {
+      limited=await env.LIMITER.limit({key:request.headers.get("CF-Connecting-IP")||"unknown"});
+    } catch {
+      return send({error:"No se pudo comprobar el límite de uso"},503,origin);
+    }
+    if(!limited.success) return send({error:"Se alcanzó el límite de solicitudes. Intenta de nuevo en un minuto."},429,origin);
+
+    let input;
+    try { input=await request.json(); }
+    catch { return send({error:"Solicitud inválida"},400,origin); }
+    if(!input || !MODES.has(input.mode))
+      return send({error:"Juego no admitido"},400,origin);
+
+    const count=input.mode==="rosco"?27:input.mode==="alphabetics"?10:Math.min(15,Math.max(1,Number(input.count)||1));
+    const level=["fácil","medio","difícil"].includes(input.level)?input.level:"medio";
+    const category=String(input.category||"").slice(0,60);
+    const exclude=Array.isArray(input.exclude)?input.exclude.slice(-20).map(x=>String(x).slice(0,60)).join(", "):"";
+    const hints={
+      clave:"Palabras secretas que puedan adivinarse con pistas de una sola palabra",
+      charadas:"Películas, series, personajes o lugares que se representen fácilmente con mímica",
+      alphabetics:"Diez palabras de iniciales consecutivas en orden alfabético",
+      rosco:"Una palabra por cada letra del alfabeto español, incluida la Ñ, con definición precisa",
+      letras:"Pares de letras inicial y final que permitan formar palabras comunes",
+      numeros:"Dos números para una suma mental, con la solución en clue",
+      cancion:"Palabras frecuentes en canciones sin reproducir letras protegidas",
+      prohibida:"Palabras cotidianas para intentar hacerlas pronunciar",
+      antifaz:"Conceptos para adivinar con pistas breves",
+      dobles:"Categorías para mencionar conjuntos de dos o tres elementos",
+      papelito:"Conceptos aptos para descripción, pista de una palabra y mímica",
+      stop:"Categorías originales para completar palabras con una inicial"
+    };
+    const prompt=`Genera ${count} elementos para un juego familiar en español. Juego: ${input.mode}. ${hints[input.mode]}. Categoría: ${category||"variada"}. Dificultad: ${level}. Evita repeticiones: ${exclude||"ninguna"}. Responde solo con items en el esquema JSON indicado. Cada item lleva word, category y clue (vacía si no aplica). No incluyas material ofensivo.`;
+    let response;
+    try {
+      response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",{
+        method:"POST",
+        headers:{"Content-Type":"application/json","x-goog-api-key":env.GEMINI_API_KEY},
+        body:JSON.stringify({
+          contents:[{parts:[{text:prompt}]}],
+          generationConfig:{responseMimeType:"application/json",responseSchema:SCHEMA,thinkingConfig:{thinkingLevel:"minimal"},maxOutputTokens:8192}
+        }),
+        signal:AbortSignal.timeout(25000)
+      });
+    } catch {
+      return send({error:"No se pudo contactar al generador"},502,origin);
+    }
+    if(!response.ok) return send({error:"El generador no está disponible ("+response.status+")"},502,origin);
+
+    let data;
+    try { data=await response.json(); }
+    catch { return send({error:"Respuesta del generador inválida"},502,origin); }
+    const candidate=data.candidates?.[0];
+    const text=(candidate?.content?.parts||[]).map(part=>part.text||"").join("").trim();
+    if(!text) return send({error:"El generador no devolvió contenido"},502,origin);
+    let values;
+    try { values=JSON.parse(text).items; }
+    catch { return send({error:"El contenido llegó incompleto"},502,origin); }
+    if(!Array.isArray(values)) return send({error:"Formato de respuesta no válido"},502,origin);
+
+    const seen=new Set();
+    const items=[];
+    for(const value of values){
+      const word=String(value.word||"").trim().slice(0,110);
+      const key=word.toLocaleLowerCase("es");
+      if(!word||seen.has(key))continue;
+      seen.add(key);
+      items.push({word,category:String(value.category||"").slice(0,80),clue:String(value.clue||"").slice(0,250)});
+      if(items.length>=count)break;
+    }
+    if(!items.length) return send({error:"El generador no devolvió palabras válidas"},502,origin);
+    return send({items},200,origin);
+  }
+};

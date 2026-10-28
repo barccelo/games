@@ -1,8 +1,18 @@
 {
   "name": "games-gemini",
   "main": "src/index.js",
-  "compatibility_date": "2026-10-01",
+  "compatibility_date": "2026-10-28",
   "observability": {
     "enabled": true
-  }
+  },
+  "ratelimits": [
+    {
+      "name": "LIMITER",
+      "namespace_id": "4062026",
+      "simple": {
+        "limit": 12,
+        "period": 60
+      }
+    }
+  ]
 }
