@@ -1,12 +1,44 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119"><meta name="description" content="Cronómetro por turnos y marcador de aciertos de cada equipo."><title>Charadas Pro Max · Games</title><link rel="stylesheet" href="./ui.css?v=2"><script src="./ui.js?v=2" defer></script><script src="./ai.js?v=4" defer></script></head>
-<body data-game="charadas"><main class="wrap"><header class="top"><a class="back" href="../">← Games</a><span class="brand">Herramienta de juego</span></header><div class="eyebrow">Interfaz de apoyo</div><h1>Charadas Pro Max</h1><p class="sub">Cronómetro por turnos y marcador de aciertos de cada equipo.</p>
-
-<section class="panel"><h2>Equipos y duración</h2><div class="row"><div class="col"><label for="chA">Primer equipo</label><input id="chA" maxlength="30" value="Equipo A"></div><div class="col"><label for="chB">Segundo equipo</label><input id="chB" maxlength="30" value="Equipo B"></div><div class="col"><label for="chDuration">Segundos por turno</label><input id="chDuration" type="number" min="10" max="600" value="60"></div></div></section>
-<section class="panel"><div class="row between"><span id="chTurn" class="tag">Turno del Equipo A</span><span id="chRound" class="secondary">Turno 1</span></div>
-<div id="chClock" class="bigtime" role="timer">1:00</div>
-<div class="stack"><button id="chStart">Iniciar</button><button id="chPause" class="alt" disabled>Pausar</button><button id="chNext" class="alt">Siguiente turno</button></div><p id="chStatus" class="hint" role="status">El reloj comenzará al presionar Iniciar.</p>
-<hr class="divider"><h2>Puntuación</h2><div class="scores"><div class="score active" id="chBox0"><span class="name" id="chName0">Equipo A</span><strong id="chScore0">0</strong><div class="scoretools"><button class="alt smallbtn" data-score="ch:0:-1" aria-label="Restar punto al Equipo A">−</button><button class="smallbtn" data-score="ch:0:1" aria-label="Sumar punto al Equipo A">+ Acierto</button></div></div><div class="score" id="chBox1"><span class="name" id="chName1">Equipo B</span><strong id="chScore1">0</strong><div class="scoretools"><button class="alt smallbtn" data-score="ch:1:-1" aria-label="Restar punto al Equipo B">−</button><button class="smallbtn" data-score="ch:1:1" aria-label="Sumar punto al Equipo B">+ Acierto</button></div></div></div>
-<div class="row" style="margin-top:17px"><button id="chReset" class="warn">Reiniciar partida</button></div><p class="rules">Reglas oficiales: pistas preparadas en papel, 60 segundos por turno, únicamente mímica. No se permite hablar, hacer sonidos, deletrear ni usar accesorios.</p></section>
-<div class="panel" data-ai="generator"><h2>Palabras de la partida</h2><p>Quien da las pistas debe mirar la pantalla; los adivinadores miran en otra dirección.</p><div class="row"><div class="col"><label for="aiCategory">Categoría o tema</label><select id="aiCategory"><option value="">Todas</option><option value="Películas o series">Películas o series</option><option value="Personas o personajes">Personas o personajes</option><option value="Lugares">Lugares</option></select></div><div class="col"><label for="aiLevel">Dificultad</label><select id="aiLevel"><option value="fácil">Fácil</option><option value="medio" selected>Media</option><option value="difícil">Difícil</option></select></div><div class="col"><label for="aiCount">Cantidad</label><input type="number" id="aiCount" min="1" max="27" value="10"></div></div><div class="stack" style="margin-top:18px"><button id="aiLocal" class="alt">Usar palabras incluidas</button><button id="aiGenerate">Generar palabras</button></div><div class="hint" id="aiStatus" role="status">Prepara las palabras para comenzar.</div></div><section class="panel" id="aiOutput"><div class="row between"><h2>Contenido de la partida</h2><span class="tag" id="aiSource">Listo</span></div><div class="bigpoints" id="aiWord" style="overflow-wrap:anywhere;font-size:clamp(35px,7vw,70px)">?</div><p class="center" id="aiMeta">Pulsa Usar palabras incluidas para comenzar.</p><div class="stack"><button class="alt" id="aiToggle">Ocultar / mostrar</button><button id="aiNext">Siguiente palabra</button><button class="alt" id="aiCopy">Copiar lista</button></div><div class="divider"></div><h3>Palabras de la ronda <span id="aiProgress"></span></h3><ol class="list" id="aiList"><li>El contenido aparecerá aquí.</li></ol></section><div class="footer">Estas herramientas son un complemento para partidas presenciales. Los datos quedan en este navegador.</div>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d1119"><title>Charadas Pro Max · Games</title>
+<link rel="stylesheet" href="./ui.css?v=5"><script defer src="./charadas.js?v=1"></script></head>
+<body data-game="charadas"><main class="wrap charades-page">
+<header class="top"><a class="back" href="../">← Games</a><span class="brand">Charadas Pro Max</span></header>
+<h1>Charadas Pro Max</h1>
+<section class="panel charades-stage">
+<div class="row between"><span id="chTurn" class="tag">Equipo A</span><span id="chProgress" class="secondary">Palabra 1 de 10</span></div>
+<div class="charades-word" id="chWord" aria-live="polite">Titanic</div>
+<div class="charades-clock" id="chClock" role="timer">01:00</div>
+<div class="stack charades-actions">
+<button id="chHit">✓ Acertó · +1</button>
+<button id="chPass" class="alt">Pasar</button>
+</div>
+<div class="row charades-controls">
+<button id="chStart" class="alt">Iniciar tiempo</button>
+<button id="chPause" class="alt" disabled>Pausar</button>
+<button id="chNext" class="alt">Cambiar equipo</button>
+</div>
+<p id="chStatus" class="secondary" role="status">La palabra es visible para quien hace la mímica.</p>
+</section>
+<section class="panel charades-scoreboard">
+<div class="row between"><h2>Puntuación</h2><span id="chRound" class="secondary">Turno 1</span></div>
+<div class="scores">
+<div id="chBox0" class="score active"><span id="chName0" class="name">Equipo A</span><strong id="chScore0">0</strong>
+<div class="scoretools"><button class="alt smallbtn" data-chscore="0:-1" aria-label="Restar punto al equipo A">−</button><button class="alt smallbtn" data-chscore="0:1" aria-label="Sumar punto al equipo A">+</button></div></div>
+<div id="chBox1" class="score"><span id="chName1" class="name">Equipo B</span><strong id="chScore1">0</strong>
+<div class="scoretools"><button class="alt smallbtn" data-chscore="1:-1" aria-label="Restar punto al equipo B">−</button><button class="alt smallbtn" data-chscore="1:1" aria-label="Sumar punto al equipo B">+</button></div></div>
+</div>
+</section>
+<details class="panel charades-settings" id="chSettings">
+<summary>Equipos y palabras</summary>
+<div class="row"><div class="col"><label for="chA">Equipo A</label><input id="chA" maxlength="30" value="Equipo A"></div>
+<div class="col"><label for="chB">Equipo B</label><input id="chB" maxlength="30" value="Equipo B"></div>
+<div class="col"><label for="chDuration">Segundos por turno</label><input type="number" min="10" max="600" id="chDuration" value="60"></div></div>
+<hr class="divider">
+<div class="row"><div class="col"><label for="chCategory">Categoría</label><select id="chCategory"><option value="">Todas</option><option value="Películas o series">Películas y series</option><option value="Personas o personajes">Personas y personajes</option><option value="Lugares">Lugares</option></select></div>
+<div class="col"><label for="chLevel">Dificultad</label><select id="chLevel"><option value="fácil">Fácil</option><option value="medio" selected>Media</option><option value="difícil">Difícil</option></select></div>
+<div class="col"><label for="chCount">Número de palabras</label><input id="chCount" type="number" min="1" max="15" value="10"></div></div>
+<div class="stack" style="margin-top:16px"><button id="chGenerate">Preparar nuevas palabras</button><button id="chLocal" class="alt">Usar palabras incluidas</button></div>
+<button class="warn" id="chReset" style="margin-top:12px">Reiniciar puntuaciones</button>
+</details>
 </main></body></html>
