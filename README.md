@@ -12,7 +12,7 @@ Las aplicaciones ya publicadas se abren en sus respectivas direcciones. Las herr
 - Letras cruzadas y Números cruzados: pares aleatorios en pantalla.
 - Alphabetics: diez palabras, dos fases de 30 segundos y sustituciones.\n- Papelito: tres rondas con el mismo conjunto de palabras.\n- Adivina la canción, Palabra prohibida, Antifaz, Dobles y triples y Stop rodado: pantallas y controles adaptados a cada dinámica.
 
-El catálogo reúne los 18 juegos del documento oficial y Buzzer, Stuno y Basta.
+El preparador de roscos tiene una pantalla de consulta por letra, independiente del juego Pasapalabras.\n\nEl catálogo reúne los 18 juegos del documento oficial y Buzzer, Stuno y Basta.
 
 ## Desarrollo
 
