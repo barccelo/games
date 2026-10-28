@@ -1,6 +1,6 @@
 (() => {
   const api = "https://games-gemini.mbckp-at.workers.dev";
-  const bank = {
+  const bank = {\n    clave:["BRÚJULA","VENTANA","JARDÍN","GALAXIA","ESCALERA","MISTERIO","RÍO","BIBLIOTECA","TORMENTA","FARO","CASTILLO","COCINA","LINTERNA","MONTAÑA","PARAGUAS","MUSEO","TESORO","BOTELLA","CANDADO","LABERINTO"],
     alphabetics:[
       "ÁRBOL","AVIÓN","BARCO","BIBLIOTECA","CASA","CEREZA","DADO","DENTISTA",
       "ELEFANTE","ESPEJO","FARO","FIESTA","GATO","GUITARRA","HELADO","HOSPITAL",
