@@ -2,7 +2,7 @@
   const $=id=>document.getElementById(id);
   const mode=document.body.dataset.quick;
   const hasTimer=mode!=="cancion";
-  let pool=GameWords.local(mode,mode==="stop"?5:12);
+  let pool=GameWords.local(mode,mode==="stop"?5:mode==="cancion"?100:12);
   let index=0, hits=0, scores=[0,0], previousLetter="",time=mode==="antifaz"?10:60,timer=null,deadline=0;
   const length=()=>mode==="antifaz"?10:mode==="prohibida"?Number($("quickDuration").value):60;
   const format=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");

@@ -17,7 +17,7 @@
     X:["XILÓFONO","XENÓN","XILOGRAFÍA"], Y:["YATE","YOGUR","YEMA"],
     Z:["ZAPATO","ZORRO","ZANAHORIA"]
   };
-  let start=0, items=[], index=0, correct=0, phase=1, time=30;
+  let start=0, items=[], index=0, correct=0, phase=1, time=30, lastScrolled=-1;
   let timer=null, deadline=0, finished=false;
   const first = word => {
     const ch=word.trim().charAt(0).toLocaleUpperCase("es");
@@ -73,7 +73,11 @@
     $("abReplace").disabled=!playable;
     $("abStart").disabled=Boolean(timer)||!playable||time===0;
     $("abPause").disabled=!timer;
-    track.children[index]?.scrollIntoView?.({block:"nearest",inline:"nearest"});
+    if(lastScrolled!==index){
+      const wrapper=track.parentElement,cell=track.children[index];
+      if(cell)wrapper.scrollLeft=Math.max(0,cell.offsetLeft-wrapper.clientWidth/2+cell.clientWidth/2);
+      lastScrolled=index;
+    }
   }
   function next() {
     if(items.every(item=>item.status==="correct")){stop();finished=true;status("¡Diez palabras acertadas!");draw();return;}
@@ -95,7 +99,7 @@
   function setRound(startAt,words){
     stop();start=startAt;
     items=words.map(item=>({...item,status:"pending"}));
-    index=0;correct=0;phase=1;time=30;finished=false;
+    index=0;correct=0;phase=1;time=30;finished=false;lastScrolled=-1;
     $("abStart").textContent="Iniciar 30 segundos";
     editGrid();draw();
     status("Recorrido listo: "+items[0].letter+" a "+items[9].letter+".");
@@ -156,5 +160,6 @@
     status("Palabras preparadas. Puedes editarlas antes de jugar.");
   });
   document.addEventListener("visibilitychange",()=>{if(!document.hidden&&timer)tick();});
-  setRound(chooseStart(),local(chooseStart()));
+  const initial=chooseStart();
+  setRound(initial,local(initial));
 })();
