@@ -25,7 +25,7 @@ antifaz:["ELEFANTE","BICICLETA","AEROPUERTO","PIRÁMIDE","MARIPOSA","RELOJ","PLA
 dobles:["Personajes","Objetos del hogar","Alimentos","Animales","Países","Deportes","Profesiones","Parejas famosas"],
 papelito:["PINGÜINO","PIRATA","ASCENSOR","MICROSCOPIO","ASTRONAUTA","VOLCÁN","DRAGÓN","ARCOÍRIS","BRÚJULA","BAILARÍN"],
 stop:["Frutas","Animales","Países","Objetos","Profesiones","Películas","Comidas","Ciudades","Deportes","Nombres"],
-rosco:["ÁRBOL|Planta de tronco leñoso","BARCO|Medio de transporte que navega","CASA|Edificio destinado a vivienda","DADO|Cubo usado en juegos de azar","ELEFANTE|Mamífero terrestre de gran tamaño","FARO|Torre que emite luz de señalización","GATO|Felino doméstico","HELADO|Postre frío y dulce","IGLESIA|Templo cristiano","JARDÍN|Espacio cultivado con plantas","KOALA|Marsupial australiano","LUNA|Satélite natural de la Tierra","MONTAÑA|Gran elevación natural del terreno","NUBE|Masa visible de gotas de agua","OCÉANO|Gran extensión de agua salada","PUENTE|Construcción para cruzar un obstáculo","QUESO|Alimento elaborado con leche","RÍO|Corriente natural de agua","SOL|Estrella central del sistema solar","TREN|Transporte ferroviario","UVA|Fruto de la vid","VIENTO|Aire en movimiento","WIFI|Tecnología de red inalámbrica","XILÓFONO|Instrumento de percusión con láminas","YATE|Embarcación recreativa","ZAPATO|Calzado que cubre el pie"]
+rosco:["ÁRBOL|Planta de tronco leñoso","BARCO|Medio de transporte que navega","CASA|Edificio destinado a vivienda","DADO|Cubo usado en juegos de azar","ELEFANTE|Mamífero terrestre de gran tamaño","FARO|Torre que emite luz de señalización","GATO|Felino doméstico","HELADO|Postre frío y dulce","IGLESIA|Templo cristiano","JARDÍN|Espacio cultivado con plantas","KOALA|Marsupial australiano","LUNA|Satélite natural de la Tierra","MONTAÑA|Gran elevación natural del terreno","NUBE|Masa visible de gotas de agua","ÑANDÚ|Ave sudamericana grande que no vuela","OCÉANO|Gran extensión de agua salada","PUENTE|Construcción para cruzar un obstáculo","QUESO|Alimento elaborado con leche","RÍO|Corriente natural de agua","SOL|Estrella central del sistema solar","TREN|Transporte ferroviario","UVA|Fruto de la vid","VIENTO|Aire en movimiento","WIFI|Tecnología de red inalámbrica","XILÓFONO|Instrumento de percusión con láminas","YATE|Embarcación recreativa","ZAPATO|Calzado que cubre el pie"]
 };
 const mode=(()=>{const raw=new URLSearchParams(location.search).get("juego")||document.body.dataset.game||"clave";return Object.hasOwn(choices,raw)?raw:"clave"})();
 if($("generatorTitle")){$("generatorTitle").textContent=choices[mode][0];$("generatorInfo").textContent=choices[mode][1];document.title=choices[mode][0]+" · Games";}
@@ -71,7 +71,7 @@ function paint(){
 }
 function setup(){
  if(!$("aiLocal"))return;
- const defaultCount=mode==="clave"?1:mode==="charadas"?5:mode==="alphabetics"?10:mode==="rosco"?26:mode==="numeros"||mode==="letras"?2:10;
+ const defaultCount=mode==="clave"?1:mode==="charadas"?5:mode==="alphabetics"?10:mode==="rosco"?27:mode==="numeros"||mode==="letras"?2:10;
  $("aiCount").value=defaultCount;
  if(mode==="charadas")$("aiCategory").placeholder="Películas o series / Personas / Lugares";
  if(mode==="letras"||mode==="numeros")$("aiLocal").textContent="Generar al azar";
@@ -86,7 +86,7 @@ function setup(){
   status(endpoint?"Dirección del servicio guardada. Ya puedes generar con Gemini.":"Dirección borrada. Se mantiene el modo local.");
  };
  $("aiLocal").onclick=()=>{
-  const count=Math.max(1,Math.min(26,parseInt($("aiCount").value,10)||1));
+  const count=Math.max(1,Math.min(27,parseInt($("aiCount").value,10)||1));
   items=local(count,$("aiCategory").value.trim());position=0;visible=false;source="Sin IA";
   status("Contenido generado localmente. No se ha llamado a Gemini.");paint();
  };
@@ -95,7 +95,7 @@ function setup(){
   const token=$("aiToken").value||tokenRead();
   if(!endpoint||!token){$("aiConfig").open=true;status("Configura la URL del Worker y el código privado del anfitrión.");return;}
   if(!/^https:\/\/[a-z0-9.-]+(?::\d+)?(?:\/[^\s]*)?$/i.test(endpoint)){status("La dirección del Worker debe utilizar HTTPS.");return;}
-  const count=Math.max(1,Math.min(26,parseInt($("aiCount").value,10)||1));
+  const count=Math.max(1,Math.min(27,parseInt($("aiCount").value,10)||1));
   $("aiGenerate").disabled=true;status("Solicitando contenido a Gemini…");
   const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),30000);
   try{
