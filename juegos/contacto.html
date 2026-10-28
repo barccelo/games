@@ -1,12 +1,50 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119"><meta name="description" content="La palabra se revela una letra a la vez después de cada contacto válido."><title>Contacto · Games</title><link rel="stylesheet" href="./ui.css?v=2"><script src="./ui.js?v=2" defer></script></head>
-<body data-game="contacto"><main class="wrap"><header class="top"><a class="back" href="../">← Games</a><span class="brand">Herramienta de juego</span></header><div class="eyebrow">Interfaz de apoyo</div><h1>Contacto</h1><p class="sub">La palabra se revela una letra a la vez después de cada contacto válido.</p>
-
-<section class="panel"><h2>Preparar la palabra</h2><p>El Guardián introduce la palabra en privado. El resto de los participantes solo verá las letras que se vayan revelando.</p>
-<form id="contactForm" class="row"><div class="col"><label for="secret">Palabra secreta</label><input id="secret" type="password" autocomplete="off" maxlength="35" required placeholder="Escribe la palabra secreta" aria-describedby="secretHelp"></div><button type="submit">Preparar</button></form><p class="secondary" id="secretHelp">Una sola palabra, sin espacios (2 a 35 letras).</p></section>
-<section class="panel" aria-label="Panel de contacto"><div class="row between"><span class="tag">Palabra oculta</span><span class="secondary" id="contactProgress">Sin palabra preparada</span></div><div class="letters" id="contactLetters" aria-live="polite"><span>?</span><span>?</span><span>?</span><span>?</span></div>
-<div class="stack"><button id="contactCount" class="alt" disabled>¡Contacto! · 3 segundos</button><button id="contactReveal" disabled>Revelar letra</button></div><div class="hint" id="contactStatus" role="status">Introduce una palabra para comenzar.</div>
-<div class="stack" style="margin-top:13px"><button class="alt" id="contactBlock" disabled>Contacto bloqueado</button><button class="alt" id="contactWon" disabled>Palabra adivinada</button><button class="warn" id="contactReset" disabled>Nueva palabra</button></div>
-<p class="rules">Los jugadores anuncian sus pistas en voz alta. Si dos dicen la misma palabra después de contar «1, 2, 3», el Guardián revela la siguiente letra. Si el Guardián se adelanta, el contacto queda bloqueado.</p></section>
-<div class="footer">Estas herramientas son un complemento para partidas presenciales. Los datos quedan en este navegador.</div>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d1119">
+<title>Contacto · Games</title>
+<link rel="stylesheet" href="./ui.css?v=5">
+<script defer src="./contacto.js?v=1"></script>
+</head>
+<body data-game="contacto"><main class="wrap contact-page">
+<header class="top"><a class="back" href="../">← Games</a><span class="brand">Contacto</span></header>
+<h1>Contacto</h1>
+<section class="panel setup-panel" id="contactSetup">
+<h2>Palabra del Guardián</h2>
+<p>Escríbela en privado. Solo se mostrará la primera letra al empezar.</p>
+<form id="contactForm" class="row">
+<div class="col"><label for="secret">Palabra secreta</label><input id="secret" type="password" maxlength="35" autocomplete="off" autocapitalize="characters" placeholder="Introduce una palabra" required></div>
+<button type="submit">Comenzar partida</button>
+</form>
+<p id="secretHelp" class="secondary">De 2 a 35 letras, sin espacios.</p>
+</section>
+<section id="contactPlay" class="contact-play" hidden>
+<div class="contact-stats">
+<div class="contact-stat"><span>Duración</span><strong id="contactClock" role="timer">00:00</strong></div>
+<div class="contact-stat"><span>Contactos bloqueados</span><strong id="contactBlocked">0</strong></div>
+</div>
+<section class="panel contact-stage" aria-label="Palabra de la partida">
+<div class="row between"><span class="tag" id="contactProgress">1 letra revelada</span>
+<button id="contactEye" class="icon-action" aria-pressed="false" aria-label="Mostrar palabra secreta" title="Mostrar palabra">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+<span id="contactEyeLabel">Ver palabra</span></button></div>
+<div id="contactLetters" class="letters" aria-live="polite"></div>
+<div id="contactSecret" class="contact-secret" hidden></div>
+<div class="contact-main-actions">
+<button id="contactReveal">Revelar siguiente letra</button>
+<button id="contactBlock" class="alt">+ Contacto bloqueado</button>
+</div>
+<p id="contactStatus" class="secondary" role="status">Partida en curso.</p>
+</section>
+<div class="row contact-footer-actions">
+<button id="contactPause" class="alt">Pausar reloj</button>
+<button id="contactWon">Finalizar partida</button>
+<button id="contactReset" class="warn">Nueva palabra</button>
+</div>
+<section id="contactSummary" class="panel" hidden aria-live="polite">
+<h2>Partida finalizada</h2>
+<p id="contactResult"></p>
+</section>
+</section>
 </main></body></html>
