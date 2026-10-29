@@ -42,8 +42,13 @@
     $("contactReveal").disabled=finished || revealed>=[...word].length;
     $("contactBlock").disabled=finished;
     $("contactWon").disabled=finished;
-    $("contactPause").disabled=finished;
-    $("contactPause").textContent=timer?"Pausar reloj":"Reanudar reloj";
+    const paused=!timer;
+    $("contactClockToggle").disabled=finished;
+    $("contactClockToggle").setAttribute("aria-label",paused?"Reanudar reloj":"Pausar reloj");
+    $("contactClockToggle").setAttribute("aria-pressed",String(paused));
+    $("contactClockHint").textContent=paused?"En pausa · toca para reanudar":"Toca para pausar";
+    $("contactClockReset").disabled=finished;
+    $("contactUndoBlock").disabled=finished||blocked===0;
     updateClock();
   }
 
@@ -76,7 +81,7 @@
     $("contactEye").setAttribute("aria-pressed","false");
     $("contactEye").setAttribute("aria-label","Mostrar palabra secreta");
     $("contactEyeLabel").textContent="Ver palabra";
-    $("contactStatus").textContent="Revela una letra por cada contacto válido.";
+    $("contactStatus").textContent="Revela una letra por cada contacto válido. Toca alrededor de la palabra para sumar un bloqueo.";
     $("contactSummary").hidden=true;
     $("contactSetup").hidden=true;
     $("contactPlay").hidden=false;
@@ -98,14 +103,43 @@
     $("contactStatus").textContent="Contacto válido. Se reveló una letra.";
     draw();
   });
-  $("contactBlock").addEventListener("click",()=>{
-    if(finished)return;
+  function addBlocked() {
+    if(finished||!word)return;
     blocked++;
     $("contactStatus").textContent="Contacto bloqueado registrado.";
     draw();
+  }
+  $("contactBlock").addEventListener("click",addBlocked);
+  const touchZone=$("contactTouchZone");
+  touchZone.addEventListener("click",event=>{
+    if(event.target.closest("#contactLetters, #contactSecret"))return;
+    addBlocked();
   });
-  $("contactPause").addEventListener("click",()=>{
+  touchZone.addEventListener("keydown",event=>{
+    if(event.target!==touchZone||!["Enter"," "].includes(event.key))return;
+    event.preventDefault();
+    addBlocked();
+  });
+  $("contactUndoBlock").addEventListener("click",()=>{
+    if(finished||!blocked)return;
+    blocked--;
+    $("contactStatus").textContent="Se deshizo el último bloqueo.";
+    draw();
+  });
+  $("contactClockToggle").addEventListener("click",()=>{
+    if(finished||!word)return;
     if(timer)pause();else resume();
+    draw();
+  });
+  $("contactClockReset").addEventListener("click",()=>{
+    if(finished||!word)return;
+    if(!confirm("¿Reiniciar el reloj a 00:00? Las letras y los bloqueos no cambiarán."))return;
+    const wasRunning=Boolean(timer);
+    pause();
+    elapsed=0;
+    started=0;
+    if(wasRunning)resume();
+    $("contactStatus").textContent="Reloj reiniciado. La partida continúa.";
     draw();
   });
   $("contactWon").addEventListener("click",()=>{

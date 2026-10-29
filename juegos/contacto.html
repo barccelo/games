@@ -4,8 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0d1119">
 <title>Contacto · Games</title>
-<link rel="stylesheet" href="./ui.css?v=13">
-<script defer src="./contacto.js?v=3"></script>
+<link rel="stylesheet" href="./ui.css?v=14">
+<script defer src="./contacto.js?v=4"></script>
 <script defer src="./controles.js?v=2"></script></head>
 <body data-game="contacto"><main class="wrap contact-page">
 <header class="top"><a class="back" href="../">← Games</a><div class="top-right"><span class="brand">Contacto</span><button class="settings-toggle" type="button" data-settings-target="contactSettings" aria-label="Configuración" title="Configuración" aria-expanded="false"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 14 4l2.4-.5 1 2.3 2.3 1-.5 2.4 1.5 2-1.5 2 .5 2.4-2.3 1-1 2.3-2.4-.5-2 1.5-2-1.5-2.4.5-1-2.3-2.3-1 .5-2.4-1.5-2 1.5-2-.5-2.4 2.3-1 1-2.3L10 4Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></header>
@@ -28,10 +28,19 @@
 <span id="contactEyeLabel">Ver palabra</span></button>
 <button id="contactFullscreen" type="button" class="icon-action" aria-label="Pantalla completa" title="Pantalla completa"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/></svg><span id="contactFullscreenLabel">Pantalla completa</span></button></div>
 <div class="contact-stats contact-stats-inline">
-<div class="contact-stat"><span>Duración</span><strong id="contactClock" role="timer">00:00</strong></div>
+<div class="contact-stat contact-clock-stat">
+<button id="contactClockToggle" class="contact-clock-button" type="button" aria-label="Pausar reloj" aria-pressed="false" title="Pausar o reanudar el reloj">
+<span>Duración</span><strong id="contactClock" role="timer">00:00</strong><span id="contactClockHint" class="contact-clock-hint">Toca para pausar</span>
+</button>
+<button id="contactClockReset" class="contact-clock-reset" type="button" aria-label="Reiniciar reloj" title="Reiniciar reloj">
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.7 6.4"/><path d="M3 4v7h7"/></svg>
+</button></div>
 <div class="contact-stat"><span>Contactos bloqueados</span><strong id="contactBlocked">0</strong></div>
 </div>
+<div id="contactTouchZone" class="contact-touch-zone" role="button" tabindex="0" aria-label="Tocar alrededor de las letras para registrar un contacto bloqueado">
 <div id="contactLetters" class="letters" aria-live="polite"></div>
+<span class="contact-touch-hint" aria-hidden="true">Toca alrededor para registrar un bloqueo</span>
+</div>
 <div id="contactSecret" class="contact-secret" hidden></div>
 <div class="contact-main-actions">
 <button id="contactReveal">Revelar siguiente letra</button>
@@ -40,7 +49,7 @@
 <p id="contactStatus" class="secondary" role="status">Partida en curso.</p>
 </section>
 <details class="panel contact-config" id="contactSettings"><summary>Opciones de partida</summary><div class="row contact-footer-actions">
-<button id="contactPause" class="alt">Pausar reloj</button>
+<button id="contactUndoBlock" class="alt">Deshacer último bloqueo</button>
 <button id="contactWon">Finalizar partida</button>
 <button id="contactReset" class="warn">Nueva palabra</button>
 </div></details>
