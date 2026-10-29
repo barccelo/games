@@ -207,3 +207,15 @@
 .contact-stage:fullscreen .contact-main-actions button,.contact-presenting #contactStage .contact-main-actions button{min-height:45px}
 .contact-stage:fullscreen #contactStatus,.contact-presenting #contactStage #contactStatus{display:none}
 }
+
+.source-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 12px}
+.source-actions button{min-height:47px;padding-inline:12px}
+.source-manual{border-top:1px solid #324052;padding-top:16px;margin-top:18px}
+.source-manual p{font-size:12px;margin:5px 0 12px}
+.source-manual textarea{width:100%;background:#0e1520;border:1px solid #435065;border-radius:12px;color:#eef2f7;font:inherit;padding:13px;min-height:105px;resize:vertical}
+.source-manual textarea:focus{outline:2px solid #a7ff89}
+.settings-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:10px}
+.settings-danger{display:flex;justify-content:flex-end;border-top:1px solid #324052;margin-top:22px;padding-top:12px}
+.settings-danger .reset-link{background:transparent;color:#d9aab2;font-size:13px;font-weight:600;padding:7px 10px;min-height:40px}
+.settings-danger .reset-link:hover{background:#34262e}
+@media(max-width:580px){.source-actions{grid-template-columns:1fr 1fr}.source-actions button{font-size:13px;min-width:0}}

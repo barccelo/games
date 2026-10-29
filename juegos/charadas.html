@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0d1119"><title>Charadas Pro Max · Games</title>
-<link rel="stylesheet" href="./ui.css?v=9"><script defer src="./charadas.js?v=2"></script></head>
+<link rel="stylesheet" href="./ui.css?v=12"><script defer src="./charadas-banco.js?v=1"></script><script defer src="./charadas.js?v=3"></script></head>
 <body data-game="charadas"><main class="wrap charades-page">
 <header class="top"><a class="back" href="../">← Games</a><span class="brand">Charadas Pro Max</span></header>
 <h1>Charadas Pro Max</h1>
@@ -38,7 +38,7 @@
 <div class="row"><div class="col"><label for="chCategory">Categoría</label><select id="chCategory"><option value="">Todas</option><option value="Películas o series">Películas y series</option><option value="Personas o personajes">Personas y personajes</option><option value="Lugares">Lugares</option></select></div>
 <div class="col"><label for="chLevel">Dificultad</label><select id="chLevel"><option value="fácil">Fácil</option><option value="medio" selected>Media</option><option value="difícil">Difícil</option></select></div>
 <div class="col"><label for="chCount">Número de palabras</label><input id="chCount" type="number" min="1" max="15" value="10"></div></div>
-<div class="stack" style="margin-top:16px"><button id="chGenerate">Preparar nuevas palabras</button><button id="chLocal" class="alt">Usar palabras incluidas</button></div>
-<div class="charades-manual"><label for="chManual">Mis palabras (una por línea)</label><textarea id="chManual" rows="5" placeholder="Titanic&#10;El rey león&#10;Shakira&#10;Aeropuerto"></textarea><button id="chUseManual" class="alt">Jugar con mis palabras</button><p class="secondary" id="chManualStatus"></p></div><button class="warn" id="chReset" style="margin-top:12px">Reiniciar puntuaciones</button>
+<div class="source-actions"><button id="chGenerate">Generar palabras</button><button id="chLocal" class="alt">Banco incluido</button></div>
+<div class="source-manual"><label for="chManual">Palabras propias</label><p>Una palabra o concepto por línea.</p><textarea id="chManual" rows="4" placeholder="Titanic&#10;El rey león&#10;Shakira&#10;Aeropuerto"></textarea><div class="settings-row"><button id="chUseManual" class="alt">Utilizar mi lista</button><span class="secondary" id="chManualStatus" role="status"></span></div></div><div class="settings-danger"><button class="reset-link" id="chReset"><span data-icon="rotate-ccw"></span> Reiniciar marcador</button></div>
 </details>
 </main></body></html>
