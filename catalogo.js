@@ -96,6 +96,11 @@ cards.forEach((card,i) => {
   button.dataset.fav=game.id;
   button.type="button";
   card.querySelector(".game-top").append(button);
+  const route=({contacto:"contacto",charadas:"charadas",clave:"clave",stop:"stop",papelito:"papelito",letras:"letras",numeros:"numeros",alphabetics:"alphabetics",cancion:"cancion",prohibida:"prohibida",antifaz:"antifaz",dobles:"dobles"})[game.id];
+  card.dataset.url=game.url||(route?"./juegos/"+route+".html":"");
+  card.setAttribute("role",game.url||route?"link":"button");
+  card.setAttribute("tabindex","0");
+  card.setAttribute("aria-label",(game.url||route?"Abrir ":"Ver reglas de ")+game.name);
 });
 document.addEventListener("click",event=>{
   const star=event.target.closest("[data-fav]");
@@ -108,6 +113,13 @@ document.addEventListener("click",event=>{
   }
   const rules=event.target.closest("[data-open]");
   if (rules) return openRules(rules.dataset.open);
+  if(event.target.closest("a,button,input,select,textarea,summary"))return;
+  const card=event.target.closest("#games .game");
+  if(card){
+    if(card.dataset.url){window.location.assign(card.dataset.url);}
+    else openRules(games[cards.indexOf(card)].id);
+    return;
+  }
   const chip=event.target.closest("[data-filter]");
   if (chip) {
     filter=chip.dataset.filter;
@@ -118,6 +130,13 @@ document.addEventListener("click",event=>{
     refresh();
   }
 });
+document.querySelectorAll("#games .game").forEach(card=>card.addEventListener("keydown",event=>{
+  if((event.key==="Enter"||event.key===" ")&&event.target===card){
+    event.preventDefault();
+    if(card.dataset.url)window.location.assign(card.dataset.url);
+    else openRules(games[cards.indexOf(card)].id);
+  }
+}));
 $("search").addEventListener("input",refresh);
 $("close").addEventListener("click",()=>$("dialog").close());
 $("dialog").addEventListener("click",event=>{if(event.target===$("dialog"))$("dialog").close()});
