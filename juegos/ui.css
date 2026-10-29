@@ -291,3 +291,47 @@
 .contact-stage .letters .letter-revealed:hover{background:#284036}
 .contact-stage .letters .letter-revealed:focus-visible{outline:2px solid #a7ff89;outline-offset:4px}
 .contact-stage #contactProgress.contact-complete{background:#23543a;color:#c4ffd2}
+
+
+/* Same box metrics for revealed buttons and concealed spans. */
+.contact-stage .letters > :is(span,button){
+  box-sizing:border-box;
+  display:grid;
+  place-items:center;
+  align-self:center;
+  flex:0 0 auto;
+  width:clamp(25px,6vw,42px);
+  min-width:0;
+  min-height:0;
+  height:clamp(40px,8vw,57px);
+  margin:0;
+  padding:0;
+  border:0;
+  border-bottom:3px solid #b1fd92;
+  border-radius:6px 6px 2px 2px;
+  background:#101a25;
+  color:#eef2f7;
+  line-height:1;
+  font-size:clamp(21px,5vw,31px);
+  font-weight:800;
+}
+.contact-stage:fullscreen .letters > :is(span,button),
+.contact-presenting #contactStage .letters > :is(span,button){
+  width:clamp(29px,6.4vw,90px);
+  height:clamp(52px,10vw,104px);
+  font-size:clamp(24px,6.5vw,70px);
+}
+@media(orientation:landscape) and (max-height:560px){
+  .contact-stage:fullscreen .letters > :is(span,button),
+  .contact-presenting #contactStage .letters > :is(span,button){
+    width:clamp(28px,5vw,65px);
+    height:clamp(38px,13vh,64px);
+    font-size:clamp(25px,9vh,48px);
+  }
+}
+@media(max-width:620px){
+  .contact-stage .letters > :is(span,button){
+    width:clamp(25px,6vw,42px);
+    height:clamp(40px,8vw,57px);
+  }
+}
