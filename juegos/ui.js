@@ -12,7 +12,7 @@
   };
   const announce = (id,text) => { $(id).textContent=text; };
   const name = (input,fallback) => $(input).value.trim()||fallback;
-  if(game === "clave") {
+  if(document.body.dataset.game === "clave") {
     const initial={scores:[0,0],turn:0,round:1,points:6,moon:false,rivalMoon:false,names:["Equipo A","Equipo B"]};
     let st=get("clave",initial);
     if(!st||!Array.isArray(st.scores)||st.scores.length!==2) st=initial;
