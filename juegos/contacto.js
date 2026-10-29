@@ -186,9 +186,11 @@
     draw();
   }
   $("contactBlock").addEventListener("click",addBlocked);
+  const letters=$("contactLetters");
   const touchZone=$("contactTouchZone");
+  letters.addEventListener("click",event=>event.stopPropagation());
   touchZone.addEventListener("click",event=>{
-    if(event.target.closest("#contactLetters"))return;
+    if(event.composedPath().includes(letters))return;
     addBlocked();
   });
   touchZone.addEventListener("keydown",event=>{
