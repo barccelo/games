@@ -24,6 +24,14 @@
     panel.addEventListener("toggle",sync);
     sync();
   });
+  const check = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
+  document.querySelectorAll("button").forEach(button => {
+    const node=button.firstChild;
+    if(node?.nodeType===Node.TEXT_NODE && /^\\s*✓/.test(node.textContent)){
+      node.textContent=node.textContent.replace("✓","");
+      button.insertAdjacentHTML("afterbegin",check);
+    }
+  });
   const reload = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 3v5h5"/></svg>';
   document.querySelectorAll('[data-icon="rotate-ccw"]').forEach(el=>el.innerHTML=reload);
 })();
