@@ -4,8 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0d1119">
 <title>Contacto · Games</title>
-<link rel="stylesheet" href="./ui.css?v=14">
-<script defer src="./contacto.js?v=4"></script>
+<link rel="stylesheet" href="./ui.css?v=15">
+<script defer src="./contacto.js?v=5"></script>
 <script defer src="./controles.js?v=2"></script></head>
 <body data-game="contacto"><main class="wrap contact-page">
 <header class="top"><a class="back" href="../">← Games</a><div class="top-right"><span class="brand">Contacto</span><button class="settings-toggle" type="button" data-settings-target="contactSettings" aria-label="Configuración" title="Configuración" aria-expanded="false"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 14 4l2.4-.5 1 2.3 2.3 1-.5 2.4 1.5 2-1.5 2 .5 2.4-2.3 1-1 2.3-2.4-.5-2 1.5-2-1.5-2.4.5-1-2.3-2.3-1 .5-2.4-1.5-2 1.5-2-.5-2.4 2.3-1 1-2.3L10 4Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></header>
@@ -22,11 +22,11 @@
 <section id="contactPlay" class="contact-play" hidden>
 
 <section class="panel contact-stage" id="contactStage" aria-label="Palabra de la partida">
-<div class="row between"><span class="tag" id="contactProgress">1 letra revelada</span>
-<button id="contactEye" class="icon-action" aria-pressed="false" aria-label="Mostrar palabra secreta" title="Mostrar palabra">
+<div class="contact-toolbar"><span class="tag" id="contactProgress">1 letra revelada</span><div class="contact-toolbar-actions">
+<button id="contactEye" type="button" class="contact-icon-button" aria-pressed="false" aria-label="Mostrar palabra secreta" title="Mostrar palabra">
 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
-<span id="contactEyeLabel">Ver palabra</span></button>
-<button id="contactFullscreen" type="button" class="icon-action" aria-label="Pantalla completa" title="Pantalla completa"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/></svg><span id="contactFullscreenLabel">Pantalla completa</span></button></div>
+</button>
+<button id="contactFullscreen" type="button" class="contact-icon-button" aria-label="Pantalla completa" title="Entrar en pantalla completa"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/></svg></button></div></div>
 <div class="contact-stats contact-stats-inline">
 <div class="contact-stat contact-clock-stat">
 <button id="contactClockToggle" class="contact-clock-button" type="button" aria-label="Pausar reloj" aria-pressed="false" title="Pausar o reanudar el reloj">

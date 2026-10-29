@@ -80,7 +80,6 @@
     $("contactSecret").hidden=true;
     $("contactEye").setAttribute("aria-pressed","false");
     $("contactEye").setAttribute("aria-label","Mostrar palabra secreta");
-    $("contactEyeLabel").textContent="Ver palabra";
     $("contactStatus").textContent="Revela una letra por cada contacto válido. Toca alrededor de la palabra para sumar un bloqueo.";
     $("contactSummary").hidden=true;
     $("contactSetup").hidden=true;
@@ -95,7 +94,7 @@
     const visible=!element.hidden;
     $("contactEye").setAttribute("aria-pressed",String(visible));
     $("contactEye").setAttribute("aria-label",visible?"Ocultar palabra secreta":"Mostrar palabra secreta");
-    $("contactEyeLabel").textContent=visible?"Ocultar palabra":"Ver palabra";
+    $("contactEye").title=visible?"Ocultar palabra":"Mostrar palabra";
   });
   $("contactReveal").addEventListener("click",()=>{
     if(finished)return;
@@ -149,7 +148,6 @@
     exitFull();
     revealed=[...word].length;
     $("contactSecret").hidden=true;
-    $("contactEyeLabel").textContent="Ver palabra";
     $("contactEye").setAttribute("aria-pressed","false");
     $("contactResult").textContent="Duración: "+format(seconds())+" · Contactos bloqueados: "+blocked+". Palabra: "+word+".";
     $("contactSummary").hidden=false;
@@ -158,11 +156,11 @@
   });
   const stage=$("contactStage");
   const fullButton=$("contactFullscreen");
-  const fullText=$("contactFullscreenLabel");
   const isFull=()=>Boolean(document.fullscreenElement)||document.body.classList.contains("contact-presenting");
   const updateFull=()=>{
-    fullText.textContent=isFull()?"Salir de pantalla completa":"Pantalla completa";
-    fullButton.setAttribute("aria-label",fullText.textContent);
+    const label=isFull()?"Salir de pantalla completa":"Entrar en pantalla completa";
+    fullButton.setAttribute("aria-label",label);
+    fullButton.title=label;
   };
   const exitFull=()=>{
     document.body.classList.remove("contact-presenting");
