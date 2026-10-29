@@ -150,7 +150,14 @@
       if(response.ok&&Array.isArray(data.items)){
         for(const item of base){
           const match=data.items.find(x=>x&&typeof x.word==="string"&&first(x.word)===item.letter);
-          if(match)item.word=match.word.trim().toLocaleUpperCase("es");
+          if(match){
+            const candidate=match.word.trim().toLocaleUpperCase("es");
+            if(!(used[item.letter]||[]).includes(candidate)){
+              item.word=candidate;
+              used[item.letter]=[...(used[item.letter]||[]),candidate].slice(-bank[item.letter].length);
+              storeUsed();
+            }
+          }
         }
       }
     }catch{}finally{clearTimeout(timeout);btn.disabled=false;}
