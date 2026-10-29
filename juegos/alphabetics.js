@@ -1,24 +1,23 @@
 (() => {
   const $ = id => document.getElementById(id);
   const letters = [..."ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"];
-  const bank = {
-    A:["ÁRBOL","AVIÓN","ABRAZO"], B:["BARCO","BICICLETA","BIBLIOTECA"],
-    C:["CASA","CONEJO","CAMINO"], D:["DADO","DELFÍN","DIAMANTE"],
-    E:["ELEFANTE","ESPEJO","ESTRELLA"], F:["FARO","FIESTA","FLOR"],
-    G:["GATO","GUITARRA","GLOBO"], H:["HELADO","HOSPITAL","HORMIGA"],
-    I:["IGLESIA","ISLA","IMÁN"], J:["JARDÍN","JIRAFA","JABÓN"],
-    K:["KOALA","KARATE","KIWI"], L:["LUNA","LIBRO","LIMÓN"],
-    M:["MESA","MONTAÑA","MARIPOSA"], N:["NUBE","NARANJA","NIDO"],
-    Ñ:["ÑANDÚ","ÑOQUI","ÑAME"], O:["OCÉANO","OSO","OVEJA"],
-    P:["PERRO","PUENTE","PARAGUAS"], Q:["QUESO","QUÍMICA","QUINCE"],
-    R:["RÍO","RELOJ","RATÓN"], S:["SOL","SOMBRERO","SERPIENTE"],
-    T:["TREN","TORTUGA","TELÉFONO"], U:["UVA","UNIVERSO","UNICORNIO"],
-    V:["VIENTO","VENTANA","VOLCÁN"], W:["WIFI","WEB","WESTERN"],
-    X:["XILÓFONO","XENÓN","XILOGRAFÍA"], Y:["YATE","YOGUR","YEMA"],
-    Z:["ZAPATO","ZORRO","ZANAHORIA"]
-  };
+  const bank=window.AlphabeticsBank;
   let start=0, items=[], index=0, correct=0, phase=1, time=30, lastScrolled=-1;
   let timer=null, deadline=0, finished=false;
+  const storageKey="games-alphabetics-used-v1";
+  let used={};
+  try{used=JSON.parse(localStorage.getItem(storageKey)||"{}")||{}}catch{}
+  const storeUsed=()=>{try{localStorage.setItem(storageKey,JSON.stringify(used))}catch{}};
+  function pick(letter,avoid=""){
+    const pool=bank[letter],seen=new Set(used[letter]||[]);
+    let available=pool.filter(w=>!seen.has(w)&&w!==avoid);
+    if(!available.length){used[letter]=[];available=pool.filter(w=>w!==avoid);}
+    if(!available.length)available=pool;
+    const word=available[Math.floor(Math.random()*available.length)];
+    used[letter]=[...(used[letter]||[]),word].slice(-pool.length);
+    storeUsed();
+    return word;
+  }
   const first = word => {
     const ch=word.trim().charAt(0).toLocaleUpperCase("es");
     return ch==="Ñ"?"Ñ":ch.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -33,8 +32,7 @@
   function local(startAt) {
     return Array.from({length:10},(_,i)=>{
       const letter=letters[(startAt+i)%letters.length];
-      const options=bank[letter];
-      return {letter,word:options[Math.floor(Math.random()*options.length)],status:"pending"};
+      return {letter,word:pick(letter),status:"pending"};
     });
   }
   function stop() {
@@ -119,7 +117,7 @@
   });
   $("abReplace").addEventListener("click",()=>{
     const item=current();if(!item||finished)return;
-    const alternative=bank[item.letter].find(w=>w!==item.word);
+    const alternative=pick(item.letter,item.word);
     if(alternative){item.word=alternative;editGrid();draw();status("Palabra sustituida por otra con "+item.letter+".");}
     else {
       $("abOptions").open=true;
