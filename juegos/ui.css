@@ -286,3 +286,8 @@
 .contact-stage .letters .letter-next:focus-visible{outline:2px solid #a7ff89;outline-offset:4px}
 .contact-stage .letters .letter-peek{color:#a7ff89;background:#20352b}
 @media(prefers-reduced-motion:reduce){.contact-stage .letters .letter-next{transition:none}}
+
+.contact-stage .letters .letter-revealed{padding:0;background:#101a25;color:#eef2f7;cursor:pointer}
+.contact-stage .letters .letter-revealed:hover{background:#284036}
+.contact-stage .letters .letter-revealed:focus-visible{outline:2px solid #a7ff89;outline-offset:4px}
+.contact-stage #contactProgress.contact-complete{background:#23543a;color:#c4ffd2}

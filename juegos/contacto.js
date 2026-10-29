@@ -1,7 +1,9 @@
 (() => {
   const $ = id => document.getElementById(id);
   let word = "";
-  let revealed = 1;
+  let shown=new Set([0]);
+  let autoCompleted=false;
+  let resumeOnUndo=false;
   let blocked = 0;
   let elapsed = 0;
   let started = 0;
@@ -48,26 +50,30 @@
   function draw() {
     const letters=$("contactLetters");
     letters.replaceChildren();
-    for (const [i,char] of [...word].entries()) {
-      const next=i===revealed&&!finished;
-      const box=document.createElement(next?"button":"span");
-      const visible=i<revealed||peeking;
-      box.textContent=visible?char:"·";
-      if(next){
+    const chars=[...word];
+    const pending=chars.findIndex((_,i)=>!shown.has(i));
+    for(const [i,char] of chars.entries()){
+      const isShown=shown.has(i);
+      const isNext=i===pending&&!finished;
+      const canHide=isShown&&i>0&&(!finished||autoCompleted);
+      const box=document.createElement(canHide||isNext?"button":"span");
+      box.textContent=isShown||peeking?char:"·";
+      if(canHide||isNext){
         box.type="button";
-        box.className="letter-next";
-        box.title="Revelar siguiente letra";
-        box.setAttribute("aria-label","Revelar letra "+(i+1));
-        box.addEventListener("click",revealNext);
-      } else {
-        box.setAttribute("aria-label",visible?char:"Letra oculta");
+        box.className=isShown?"letter-revealed":"letter-next";
+        box.title=isShown?"Ocultar esta letra":"Revelar siguiente letra";
+        box.setAttribute("aria-label",isShown?"Ocultar letra "+(i+1):"Revelar letra "+(i+1));
+        box.addEventListener("click",()=>toggleLetter(i));
+      }else{
+        box.setAttribute("aria-label",isShown?char:"Letra oculta");
       }
-      if(peeking&&i>=revealed)box.classList.add("letter-peek");
+      if(peeking&&!isShown)box.classList.add("letter-peek");
       letters.append(box);
     }
-    $("contactProgress").textContent=revealed+" de "+[...word].length+" letras";
+    $("contactProgress").textContent=finished&&autoCompleted?"¡Partida completada!":shown.size+" de "+chars.length+" letras";
+    $("contactProgress").classList.toggle("contact-complete",finished&&autoCompleted);
     $("contactBlocked").textContent=blocked;
-    $("contactReveal").disabled=finished || revealed>=[...word].length;
+    $("contactReveal").disabled=finished || shown.size>=[...word].length;
     $("contactBlock").disabled=finished;
     $("contactWon").disabled=finished;
     const paused=!timer;
@@ -98,7 +104,9 @@
     pause();
     clearPeek();
     word=value;
-    revealed=1;
+    shown=new Set([0]);
+    autoCompleted=false;
+    resumeOnUndo=false;
     blocked=0;
     elapsed=0;
     finished=false;
@@ -128,12 +136,47 @@
       draw();
     },previewDuration);
   });
-  function revealNext() {
-    if(finished||revealed>=[...word].length)return;
-    clearPeek();
-    revealed++;
-    $("contactStatus").textContent="Contacto válido. Se reveló una letra.";
+  function updateCompletion() {
+    if(shown.size===[...word].length){
+      resumeOnUndo=Boolean(timer);
+      pause();
+      finished=true;
+      autoCompleted=true;
+      clearPeek();
+      $("contactResult").textContent="Duración: "+format(seconds())+" · Contactos bloqueados: "+blocked+". Palabra: "+word+".";
+      $("contactSummary").hidden=false;
+      $("contactStatus").textContent="¡Partida completada! Toca una letra para corregir una revelación accidental.";
+    }else{
+      $("contactStatus").textContent="Contacto válido. Se reveló una letra.";
+    }
     draw();
+  }
+  function toggleLetter(index) {
+    const isShown=shown.has(index);
+    if(index===0||(!isShown&&finished)||finished&&!autoCompleted)return;
+    clearPeek();
+    if(isShown){
+      shown.delete(index);
+      if(autoCompleted){
+        finished=false;
+        autoCompleted=false;
+        $("contactSummary").hidden=true;
+        if(resumeOnUndo)resume();
+        resumeOnUndo=false;
+      }
+      $("contactStatus").textContent="Letra ocultada. La partida continúa.";
+      draw();
+      return;
+    }
+    const next=[...word].findIndex((_,i)=>!shown.has(i));
+    if(index!==next)return;
+    shown.add(index);
+    updateCompletion();
+  }
+  function revealNext() {
+    if(finished)return;
+    const next=[...word].findIndex((_,i)=>!shown.has(i));
+    if(next!==-1)toggleLetter(next);
   }
   $("contactReveal").addEventListener("click",revealNext);
   function addBlocked() {
@@ -180,8 +223,9 @@
     pause();
     clearPeek();
     finished=true;
+    autoCompleted=false;
+    shown=new Set([...word].map((_,i)=>i));
     exitFull();
-    revealed=[...word].length;
     $("contactResult").textContent="Duración: "+format(seconds())+" · Contactos bloqueados: "+blocked+". Palabra: "+word+".";
     $("contactSummary").hidden=false;
     $("contactStatus").textContent="Partida terminada.";
@@ -216,8 +260,11 @@
     pause();
     clearPeek();
     word="";
+    shown=new Set([0]);
     elapsed=0;
     finished=false;
+    autoCompleted=false;
+    resumeOnUndo=false;
     $("contactPlay").hidden=true;
     $("contactSetup").hidden=false;
     $("secretHelp").textContent="De 2 a 35 letras, sin espacios.";
