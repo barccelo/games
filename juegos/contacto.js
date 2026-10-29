@@ -80,6 +80,7 @@
     $("contactSummary").hidden=true;
     $("contactSetup").hidden=true;
     $("contactPlay").hidden=false;
+    $("contactSettings").open=false;
     resume();
     draw();
   });
@@ -111,6 +112,7 @@
     if(finished)return;
     pause();
     finished=true;
+    exitFull();
     revealed=[...word].length;
     $("contactSecret").hidden=true;
     $("contactEyeLabel").textContent="Ver palabra";
@@ -120,7 +122,32 @@
     $("contactStatus").textContent="Partida terminada.";
     draw();
   });
-  $("contactReset").addEventListener("click",()=>{
+  const stage=$("contactStage");
+  const fullButton=$("contactFullscreen");
+  const fullText=$("contactFullscreenLabel");
+  const isFull=()=>Boolean(document.fullscreenElement)||document.body.classList.contains("contact-presenting");
+  const updateFull=()=>{
+    fullText.textContent=isFull()?"Salir de pantalla completa":"Pantalla completa";
+    fullButton.setAttribute("aria-label",fullText.textContent);
+  };
+  const exitFull=()=>{
+    document.body.classList.remove("contact-presenting");
+    if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+    try{screen.orientation?.unlock?.()}catch{}
+    updateFull();
+  };
+  fullButton.addEventListener("click",async()=>{
+    if(isFull()){exitFull();return;}
+    document.body.classList.add("contact-presenting");
+    updateFull();
+    try{await stage.requestFullscreen?.({navigationUI:"hide"});}catch{}
+    try{await screen.orientation?.lock?.("landscape");}catch{}
+  });
+  document.addEventListener("fullscreenchange",()=>{
+    if(!document.fullscreenElement)document.body.classList.remove("contact-presenting");
+    updateFull();
+  });
+  $("contactReset").addEventListener("click",()=>{exitFull();
     pause();
     word="";
     elapsed=0;

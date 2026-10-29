@@ -175,3 +175,35 @@
 .duel-custom button,.ro-edit button{margin-top:10px}
 .ro-edit .col{min-width:180px}
 @media(max-width:550px){.duel-custom{margin-top:0}.duel-custom .row>.col{min-width:100%}}
+
+.contact-stage{position:relative}
+.contact-stats-inline{margin:16px auto 18px;max-width:690px}
+.contact-stats-inline .contact-stat{text-align:center}
+.contact-stage .contact-stats-inline strong{font-size:clamp(31px,6vw,57px)}
+.contact-stage .row.between{flex-wrap:wrap}
+.contact-config{margin-top:13px}
+.contact-config summary{font-weight:700;cursor:pointer;min-height:30px}
+.contact-config .contact-footer-actions{margin-top:16px}
+.contact-stage:fullscreen,.contact-presenting #contactStage{
+  position:fixed;inset:0;z-index:9999;width:100%;max-width:none;height:100dvh;overflow-y:auto;
+  margin:0;padding:clamp(12px,2.5vw,32px);border:0;border-radius:0;background:#0d1119;
+  display:flex;flex-direction:column;justify-content:space-between;gap:8px
+}
+.contact-stage:fullscreen .contact-stats,.contact-presenting #contactStage .contact-stats{width:min(100%,700px);margin:0 auto}
+.contact-stage:fullscreen .letters,.contact-presenting #contactStage .letters{flex:1 0 auto;align-content:center;align-items:center;margin:4px auto;max-width:100%;gap:clamp(4px,1vw,10px);overflow:auto}
+.contact-stage:fullscreen .letters span,.contact-presenting #contactStage .letters span{
+  font-size:clamp(24px,6.5vw,70px);min-width:clamp(29px,6.4vw,90px);height:clamp(52px,10vw,104px)
+}
+.contact-stage:fullscreen .contact-main-actions,.contact-presenting #contactStage .contact-main-actions{width:min(100%,720px);margin:0 auto}
+.contact-stage:fullscreen .contact-stats-inline .contact-stat,.contact-presenting #contactStage .contact-stats-inline .contact-stat{padding:8px 12px}
+.contact-stage:fullscreen #contactStatus,.contact-presenting #contactStage #contactStatus{margin:0;text-align:center}
+.contact-stage:fullscreen .contact-secret,.contact-presenting #contactStage .contact-secret{margin:0 auto;width:min(100%,720px)}
+@media(orientation:landscape) and (max-height:560px){
+.contact-stage:fullscreen,.contact-presenting #contactStage{gap:5px;padding:8px 18px}
+.contact-stage:fullscreen .contact-stats-inline,.contact-presenting #contactStage .contact-stats-inline{display:flex;justify-content:center;gap:8px}
+.contact-stage:fullscreen .contact-stats-inline .contact-stat,.contact-presenting #contactStage .contact-stats-inline .contact-stat{flex:1;max-width:280px;padding:6px 10px}
+.contact-stage:fullscreen .contact-stats-inline .contact-stat strong,.contact-presenting #contactStage .contact-stats-inline .contact-stat strong{font-size:clamp(24px,5vh,39px)}
+.contact-stage:fullscreen .letters span,.contact-presenting #contactStage .letters span{height:clamp(38px,13vh,64px);font-size:clamp(25px,9vh,48px);min-width:clamp(28px,5vw,65px)}
+.contact-stage:fullscreen .contact-main-actions button,.contact-presenting #contactStage .contact-main-actions button{min-height:45px}
+.contact-stage:fullscreen #contactStatus,.contact-presenting #contactStage #contactStatus{display:none}
+}
