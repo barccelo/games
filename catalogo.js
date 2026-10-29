@@ -22,6 +22,9 @@ const games=[
 {id:"basta",name:"Basta",icon:"🎯",type:"external",desc:"Rueda de letras, categorías, temporizador y marcador.",url:"https://barccelo.github.io/basta/",rules:["Configura jugadores, categorías y tiempo.","Gira la rueda para elegir una letra.","Completa las categorías y registra los resultados."]}
 ];
 const $ = id => document.getElementById(id);
+const iconPaths = {"contacto":"<rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"3\"/><path d=\"m6 16 3-8 3 8M7 13h4M16 16V8m0 4h4\"/>","cadena":"<path d=\"M10 13a5 5 0 0 0 7 .5l3-3a5 5 0 0 0-7-7l-1.8 1.8M14 11a5 5 0 0 0-7-.5l-3 3a5 5 0 0 0 7 7l1.8-1.8\"/>","charadas":"<path d=\"M4 4c4-2 9-2 13 0v11c-3 4-9 6-13 2Z\"/><path d=\"M7 9h.01M14 9h.01M7 13c2 2 5 2 7 0\"/>","clave":"<circle cx=\"8\" cy=\"15\" r=\"4\"/><path d=\"m11 12 9-9 2 2-3 3 2 2-3 3-2-2-3 3\"/>","conecta":"<path d=\"M8 3H3v6a2 2 0 0 1 0 4v8h7v-3a2 2 0 0 1 4 0v3h7v-7h-3a2 2 0 0 1 0-4h3V3h-7v3a2 2 0 0 1-4 0V3Z\"/>","ia":"<rect x=\"4\" y=\"7\" width=\"16\" height=\"13\" rx=\"3\"/><path d=\"M12 3v4M8 3h8M8 13h.01M16 13h.01M9 17h6\"/>","stop":"<path d=\"m4 20 4.5-1 11-11-3.5-3.5-11 11L4 20ZM14 6l3.5 3.5\"/><path d=\"M4 4h7\"/>","dark":"<path d=\"M9 18h6m-5 3h4M9 15a6 6 0 1 1 6 0c-1 .9-1 1.5-1 3h-4c0-1.5 0-2.1-1-3Z\"/>","mentiroso":"<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M7 8h10M7 12h4M7 16h8\"/>","papelito":"<path d=\"M6 3h10l4 4v14H6V3Z\"/><path d=\"M16 3v5h4M9 12h8M9 16h6\"/>","letras":"<path d=\"M4 19 9 5l5 14M6 14h6M17 9h3M18.5 7.5v3\"/>","numeros":"<path d=\"M8 3 5 21M17 3l-3 18M3 9h18M2 15h18\"/>","alphabetics":"<path d=\"M4 18 9 6l5 12M6 14h6M16 7h5l-5 11h5\"/>","pasapalabras":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 3v5M21 12h-5M12 21v-5M3 12h5\"/>","cancion":"<path d=\"M9 18V5l12-2v13M9 9l12-2\"/><ellipse cx=\"6\" cy=\"18\" rx=\"3\" ry=\"2\"/><ellipse cx=\"18\" cy=\"16\" rx=\"3\" ry=\"2\"/>","prohibida":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m5.6 5.6 12.8 12.8\"/>","antifaz":"<path d=\"M3 12s3.2-6 9-6 9 6 9 6-3.2 6-9 6-9-6-9-6Z\"/><circle cx=\"12\" cy=\"12\" r=\"2.5\"/><path d=\"m4 20 16-16\"/>","dobles":"<circle cx=\"9\" cy=\"8\" r=\"3\"/><path d=\"M3 21v-3a6 6 0 0 1 12 0v3M16 6a3 3 0 0 1 0 6M17 15a5 5 0 0 1 4 5\"/>","buzzer":"<path d=\"m13 2-9 12h7l-1 8 10-12h-7l0-8Z\"/>","stuno":"<rect x=\"4\" y=\"3\" width=\"13\" height=\"17\" rx=\"2\"/><path d=\"M8 7h5M8 11h5M20 7v13H8\"/>","basta":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/>"};
+const icon = id => '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">'+(iconPaths[id]||iconPaths.basta)+'</svg>';
+
 const cards = [...document.querySelectorAll("#games .game")];
 const saved = (() => {
   try { return new Set(JSON.parse(localStorage.getItem("games-favs") || "[]")); }
@@ -59,7 +62,7 @@ function openRules(id) {
 
   $("modalTitle").textContent=game.name;
   $("modalDesc").textContent=game.desc;
-  $("modalSymbol").textContent=game.icon;
+  $("modalSymbol").innerHTML=icon(game.id);
   $("modalNote").textContent=game.note || "";
   const rules=$("rules");
   rules.replaceChildren();
@@ -91,6 +94,7 @@ function openRules(id) {
 cards.forEach((card,i) => {
   const game=games[i];
   if (!game) return;
+  card.querySelector(".symbol").innerHTML=icon(game.id);
   const button=document.createElement("button");
   button.className="favorite";
   button.dataset.fav=game.id;

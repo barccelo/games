@@ -30,3 +30,6 @@ dialog::backdrop{background:#06090ecc;backdrop-filter:blur(4px)}.modal{padding:2
 .card-secondary{display:inline-flex;padding:7px 9px;border:1px solid #3b4c5e;border-radius:9px;color:#b7ff9d;text-decoration:none;font-size:12px;font-weight:700;position:relative;z-index:2}
 .card-secondary:hover{background:#263c32}
 @media(hover:none){.game:hover{transform:none}}
+
+.game .symbol,.modalhead .symbol{background:#233041;color:#b6ff9d}
+.game .symbol svg,.modalhead .symbol svg{width:29px;height:29px;display:block}
