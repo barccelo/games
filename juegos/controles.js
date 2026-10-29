@@ -14,7 +14,8 @@
         panel.open = !panel.open;
         if(panel.open) panel.scrollIntoView({behavior:"smooth",block:"start"});
       } else if(panel.hidden){
-        document.getElementById("paEdit")?.click();
+        if(panel.id==="paSetup")document.getElementById("paEdit")?.click();
+        else document.getElementById("contactSetup")?.scrollIntoView({behavior:"smooth",block:"start"});
       } else {
         panel.scrollIntoView({behavior:"smooth",block:"start"});
       }
