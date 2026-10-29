@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d1119">
-<title>Adivina la canción · Games</title><link rel="stylesheet" href="./ui.css?v=9"><script defer src="./palabras.js?v=2"></script><script defer src="./rapidos.js?v=2"></script></head>
+<title>Adivina la canción · Games</title><link rel="stylesheet" href="./ui.css?v=13"><script defer src="./palabras.js?v=2"></script><script defer src="./rapidos.js?v=2"></script><script defer src="./controles.js?v=1"></script></head>
 <body data-quick="cancion" class="challenge-page"><main class="wrap">
-<header class="top"><a class="back" href="../">← Games</a><span class="brand">Adivina la canción</span></header>
+<header class="top"><a class="back" href="../">← Games</a><div class="top-right"><span class="brand">Adivina la canción</span><button class="settings-toggle" type="button" data-settings-target="quickSettings" aria-label="Configuración" title="Configuración" aria-expanded="false"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 14 4l2.4-.5 1 2.3 2.3 1-.5 2.4 1.5 2-1.5 2 .5 2.4-2.3 1-1 2.3-2.4-.5-2 1.5-2-1.5-2.4.5-1-2.3-2.3-1 .5-2.4-1.5-2 1.5-2-.5-2.4 2.3-1 1-2.3L10 4Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></header>
 <h1>Adivina la canción</h1><section class="panel challenge-stage">
 <div class="challenge-metrics"><span class="tag">Palabra de la ronda</span></div>
 <div id="quickWord" class="challenge-word" aria-live="polite">?</div>
@@ -11,4 +11,4 @@
 <div class="score"><span>Equipo A</span><strong id="quickA">0</strong><button data-quickscore="0" class="smallbtn alt">+ Punto</button></div>
 <div class="score"><span>Equipo B</span><strong id="quickB">0</strong><button data-quickscore="1" class="smallbtn alt">+ Punto</button></div>
 </div></section><div class="row" style="margin-top:16px"><button id="quickGenerate" class="alt">Nuevas palabras</button></div>
-<details class="panel quick-editor"><summary>Elegir mis palabras</summary><p class="secondary">Escribe palabras, una por línea. Puedes jugar únicamente con las que elijas.</p><label for="quickManual">Mis palabras</label><textarea id="quickManual" rows="5" placeholder="Amor&#10;Luna&#10;Cielo"></textarea><button id="quickApply">Usar mis palabras</button><p class="secondary" id="quickManualStatus" role="status"></p></details></main></body></html>
+<details class="panel quick-editor" id="quickSettings"><summary>Elegir mis palabras</summary><p class="secondary">Escribe palabras, una por línea. Puedes jugar únicamente con las que elijas.</p><label for="quickManual">Mis palabras</label><textarea id="quickManual" rows="5" placeholder="Amor&#10;Luna&#10;Cielo"></textarea><button id="quickApply">Usar mis palabras</button><p class="secondary" id="quickManualStatus" role="status"></p></details></main></body></html>
