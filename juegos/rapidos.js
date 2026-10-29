@@ -4,7 +4,7 @@
   const hasTimer=mode!=="cancion";
   let pool=GameWords.local(mode,mode==="stop"?5:mode==="cancion"?100:12);
   let index=0, hits=0, scores=[0,0], previousLetter="",time=mode==="antifaz"?10:60,timer=null,deadline=0;
-  const length=()=>mode==="antifaz"?10:mode==="prohibida"?Number($("quickDuration").value):60;
+  const length=()=>mode==="antifaz"?10:document.getElementById("quickDuration")?Math.max(10,Math.min(600,Number($("quickDuration").value)||60)):60;
   const format=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
   const notice=s=>{if($("quickStatus"))$("quickStatus").textContent=s;};
   function letter(){
