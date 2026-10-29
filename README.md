@@ -27,9 +27,9 @@ El Worker está en `gemini-worker/`. Consulta su README para despliegue, límite
 ## Pantallas de apoyo
 
 - **Contacto:** el Guardián escribe una palabra y puede mostrarla mientras la introduce. Durante la partida se controlan las letras reveladas, el tiempo y los contactos bloqueados.
-- **Charadas Pro Max:** tres categorías, 182 conceptos incluidos, entrada de palabras propias, mímica durante un máximo de 60 segundos y marcador de dos equipos.
+- **Charadas Pro Max:** tres categorías, 401 entradas categorizadas, entrada de palabras propias, mímica durante un máximo de 60 segundos y marcador de dos equipos.
 - **Papelito:** los participantes preparan los papelitos antes de jugar; el mismo conjunto se utiliza en las tres rondas (descripción libre, una palabra y mímica), con turnos de un minuto y puntuación acumulada.
-- **Alphabetics:** diez casillas horizontales, inicio aleatorio o desde A, dos fases de 30 segundos, pasar, sustituir y editar las diez palabras.
+- **Alphabetics:** 644 palabras incluidas, selección con historial para reducir repeticiones y diez casillas horizontales, inicio aleatorio o desde A, dos fases de 30 segundos, pasar, sustituir y editar las diez palabras.
 - **Palabra prohibida:** modo de pantalla completa que deja la palabra y el tiempo visibles; tocar durante la presentación inicia o pausa el reloj.
 - **Adivina la canción:** palabras comunes incluidas, marcador y selección manual.
 - **Letras y Números cruzados:** pares aleatorios o introducidos manualmente.
@@ -41,3 +41,5 @@ El contenido manual se prepara dentro de cada juego. Los generadores remotos son
 
 - Charadas: marcador configurable con más equipos o participantes individuales, tomando como referencia un contador por persona/equipo con botones grandes para sumar y restar.
 - Revisión visual y pruebas de interacción en móviles reales.
+
+Las tarjetas del catálogo se abren al tocarlas. Las pantallas de juego ofrecen un acceso de configuración para el contenido y las opciones aplicables; Contacto dispone de un modo de presentación horizontal a pantalla completa.
