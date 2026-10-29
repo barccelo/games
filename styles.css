@@ -31,5 +31,3 @@ dialog::backdrop{background:#06090ecc;backdrop-filter:blur(4px)}.modal{padding:2
 .card-secondary:hover{background:#263c32}
 @media(hover:none){.game:hover{transform:none}}
 
-.game .symbol,.modalhead .symbol{background:#233041;color:#b6ff9d}
-.game .symbol svg,.modalhead .symbol svg{width:29px;height:29px;display:block}
