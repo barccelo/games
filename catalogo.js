@@ -117,13 +117,6 @@ document.addEventListener("click",event=>{
   }
   const rules=event.target.closest("[data-open]");
   if (rules) return openRules(rules.dataset.open);
-  if(event.target.closest("a,button,input,select,textarea,summary"))return;
-  const card=event.target.closest("#games .game");
-  if(card){
-    if(card.dataset.url){window.location.assign(card.dataset.url);}
-    else openRules(games[cards.indexOf(card)].id);
-    return;
-  }
   const chip=event.target.closest("[data-filter]");
   if (chip) {
     filter=chip.dataset.filter;
@@ -132,6 +125,13 @@ document.addEventListener("click",event=>{
       button.setAttribute("aria-pressed",String(button===chip));
     });
     refresh();
+    return;
+  }
+  if(event.target.closest("a,button,input,select,textarea,summary"))return;
+  const card=event.target.closest("#games .game");
+  if(card){
+    if(card.dataset.url)window.location.assign(card.dataset.url);
+    else openRules(games[cards.indexOf(card)].id);
   }
 });
 document.querySelectorAll("#games .game").forEach(card=>card.addEventListener("keydown",event=>{
